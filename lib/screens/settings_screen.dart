@@ -1,0 +1,615 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../widgets/common_widgets.dart' as common;
+import '../widgets/quiz_widgets.dart';
+import '../providers/settings_provider.dart';
+import '../providers/quiz_provider.dart';
+import '../providers/theme_provider.dart';
+import 'quiz_screen.dart';
+import 'package:animations/animations.dart';
+
+/// شاشة إعدادات الاختبار
+class TestSettingsScreen extends ConsumerStatefulWidget {
+  const TestSettingsScreen({super.key});
+
+  @override
+  ConsumerState<TestSettingsScreen> createState() => _TestSettingsScreenState();
+}
+
+class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
+  final List<String> _difficulties = ['easy', 'medium', 'hard'];
+  final List<String> _categories = [
+    'general',
+    'science',
+    'history',
+    'literature',
+    'geography',
+  ];
+  final List<String> _languages = ['en', 'ar'];
+
+  String _themeLabel(ThemeMode mode) {
+    switch (mode) {
+      case ThemeMode.system:
+        return 'System';
+      case ThemeMode.light:
+        return 'Light';
+      case ThemeMode.dark:
+        return 'Dark';
+    }
+  }
+
+  Widget _buildVerticalOption(String title, bool isSelected, VoidCallback onTap) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.easeInOut,
+      margin: const EdgeInsets.symmetric(vertical: 2),
+      decoration: BoxDecoration(
+        color: isSelected ? AppColors.primaryAccent.withValues(alpha: 0.1) : Colors.transparent,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: isSelected ? AppColors.primaryAccent : AppColors.outline,
+          width: isSelected ? 2 : 1,
+        ),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(12),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      color: isSelected ? AppColors.primaryAccent : AppColors.textPrimary,
+                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                if (isSelected)
+                  Icon(
+                    Icons.check_circle,
+                    color: AppColors.primaryAccent,
+                    size: 20,
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showThemeDialog() {
+    final currentMode = ref.read(themeProvider);
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.bgCard,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
+        title: const Text(
+          'Select Theme',
+          style: TextStyle(
+            color: AppColors.textPrimary,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildVerticalOption(
+              'System',
+              currentMode == ThemeMode.system,
+              () {
+                ref.read(themeProvider.notifier).setTheme(ThemeMode.system);
+                Navigator.of(context).pop();
+              },
+            ),
+            const SizedBox(height: 8),
+            _buildVerticalOption(
+              'Light',
+              currentMode == ThemeMode.light,
+              () {
+                ref.read(themeProvider.notifier).setTheme(ThemeMode.light);
+                Navigator.of(context).pop();
+              },
+            ),
+            const SizedBox(height: 8),
+            _buildVerticalOption(
+              'Dark',
+              currentMode == ThemeMode.dark,
+              () {
+                ref.read(themeProvider.notifier).setTheme(ThemeMode.dark);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text(
+              'Cancel',
+              style: TextStyle(
+                color: AppColors.textMuted,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _startQuiz() {
+    final settings = ref.read(settingsProvider);
+    ref.read(quizProvider.notifier).startQuiz(settings);
+
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 420),
+        reverseTransitionDuration: const Duration(milliseconds: 320),
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const QuizScreen(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return SharedAxisTransition(
+            animation: animation,
+            secondaryAnimation: secondaryAnimation,
+            transitionType: SharedAxisTransitionType.scaled,
+            child: child,
+          );
+        },
+      ),
+    );
+  }
+
+  void _showDifficultyDialog() {
+    final currentDifficulty = ref.read(settingsProvider).difficulty;
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.bgCard,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
+        title: const Text(
+          'Select Difficulty',
+          style: TextStyle(
+            color: AppColors.textPrimary,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildVerticalOption(
+              'Easy',
+              currentDifficulty == 'easy',
+              () {
+                ref.read(settingsProvider.notifier).updateDifficulty('easy');
+                Navigator.of(context).pop();
+              },
+            ),
+            const SizedBox(height: 8),
+            _buildVerticalOption(
+              'Medium',
+              currentDifficulty == 'medium',
+              () {
+                ref.read(settingsProvider.notifier).updateDifficulty('medium');
+                Navigator.of(context).pop();
+              },
+            ),
+            const SizedBox(height: 8),
+            _buildVerticalOption(
+              'Hard',
+              currentDifficulty == 'hard',
+              () {
+                ref.read(settingsProvider.notifier).updateDifficulty('hard');
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text(
+              'Cancel',
+              style: TextStyle(
+                color: AppColors.textMuted,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showCategoryDialog() {
+    final currentCategory = ref.read(settingsProvider).category;
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.bgCard,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
+        title: const Text(
+          'Select Category',
+          style: TextStyle(
+            color: AppColors.textPrimary,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildVerticalOption(
+              'General',
+              currentCategory == 'general',
+              () {
+                ref.read(settingsProvider.notifier).updateCategory('general');
+                Navigator.of(context).pop();
+              },
+            ),
+            const SizedBox(height: 8),
+            _buildVerticalOption(
+              'Science',
+              currentCategory == 'science',
+              () {
+                ref.read(settingsProvider.notifier).updateCategory('science');
+                Navigator.of(context).pop();
+              },
+            ),
+            const SizedBox(height: 8),
+            _buildVerticalOption(
+              'History',
+              currentCategory == 'history',
+              () {
+                ref.read(settingsProvider.notifier).updateCategory('history');
+                Navigator.of(context).pop();
+              },
+            ),
+            const SizedBox(height: 8),
+            _buildVerticalOption(
+              'Literature',
+              currentCategory == 'literature',
+              () {
+                ref.read(settingsProvider.notifier).updateCategory('literature');
+                Navigator.of(context).pop();
+              },
+            ),
+            const SizedBox(height: 8),
+            _buildVerticalOption(
+              'Geography',
+              currentCategory == 'geography',
+              () {
+                ref.read(settingsProvider.notifier).updateCategory('geography');
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text(
+              'Cancel',
+              style: TextStyle(
+                color: AppColors.textMuted,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showLanguageDialog() {
+    final currentLanguage = ref.read(settingsProvider).language;
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.bgCard,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
+        title: const Text(
+          'Select Language',
+          style: TextStyle(
+            color: AppColors.textPrimary,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildVerticalOption(
+              'English',
+              currentLanguage == 'en',
+              () {
+                ref.read(settingsProvider.notifier).updateLanguage('en');
+                Navigator.of(context).pop();
+              },
+            ),
+            const SizedBox(height: 8),
+            _buildVerticalOption(
+              'العربية',
+              currentLanguage == 'ar',
+              () {
+                ref.read(settingsProvider.notifier).updateLanguage('ar');
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text(
+              'Cancel',
+              style: TextStyle(
+                color: AppColors.textMuted,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final settings = ref.watch(settingsProvider);
+
+    return common.AppScaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Test Settings',
+          style: TextStyle(
+            color: AppColors.textPrimary,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        leading: common.AdaptiveBackButton(),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 16),
+
+
+            // عدد الأسئلة
+            SettingsTile(
+              icon: Icons.quiz,
+              title: 'Number of Questions',
+              subtitle: '${settings.numQuestions} questions',
+              trailing: const SizedBox(width: 100),
+              onTap: () {
+                int dialogNumQuestions = settings.numQuestions;
+                showDialog(
+                  context: context,
+                  builder: (context) => StatefulBuilder(
+                    builder: (context, setState) => AlertDialog(
+                      backgroundColor: AppColors.bgCard,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(22),
+                      ),
+                      title: const Text(
+                        'Number of Questions',
+                        style: TextStyle(
+                          color: AppColors.textPrimary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            '$dialogNumQuestions',
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.primaryAccent,
+                            ),
+                          ),
+                          Slider(
+                            value: dialogNumQuestions.toDouble(),
+                            min: 5,
+                            max: 50,
+                            divisions: 45,
+                            activeColor: AppColors.primaryAccent,
+                            inactiveColor: AppColors.outline,
+                            onChanged: (value) {
+                              setState(() {
+                                dialogNumQuestions = value.round();
+                              });
+                              // تحديث فوري للإعدادات
+                              ref
+                                  .read(settingsProvider.notifier)
+                                  .updateNumQuestions(dialogNumQuestions);
+                            },
+                          ),
+                          const Text(
+                            'Range: 5 - 50 questions',
+                            style: TextStyle(
+                              color: AppColors.textMuted,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text(
+                            'Done',
+                            style: TextStyle(
+                              color: AppColors.primaryAccent,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+
+            const SizedBox(height: 16),
+
+            // مستوى الصعوبة
+            SettingsTile(
+              icon: Icons.trending_up,
+              title: 'Difficulty',
+              subtitle: settings.difficulty.toUpperCase(),
+              trailing: const Icon(
+                Icons.arrow_forward_ios,
+                color: AppColors.textMuted,
+                size: 16,
+              ),
+              onTap: _showDifficultyDialog,
+            ),
+
+            const SizedBox(height: 16),
+
+            // الفئة
+            SettingsTile(
+              icon: Icons.category,
+              title: 'Category',
+              subtitle: settings.category.toUpperCase(),
+              trailing: const Icon(
+                Icons.arrow_forward_ios,
+                color: AppColors.textMuted,
+                size: 16,
+              ),
+              onTap: _showCategoryDialog,
+            ),
+
+            const SizedBox(height: 16),
+
+            // المؤقت
+            SettingsTile(
+              icon: Icons.timer,
+              title: 'Timer per Question',
+              subtitle: settings.timerEnabled
+                  ? '${settings.timerSeconds} seconds'
+                  : 'Disabled',
+              trailing: Switch(
+                value: settings.timerEnabled,
+                onChanged: (value) {
+                  ref.read(settingsProvider.notifier).updateTimerEnabled(value);
+                },
+                activeThumbColor: AppColors.primaryAccent,
+              ),
+            ),
+
+            // إعدادات المؤقت
+            if (settings.timerEnabled) ...[
+              const SizedBox(height: 8),
+              common.AppCard(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Timer Duration: ${settings.timerSeconds} seconds',
+                      style: const TextStyle(
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Slider(
+                      value: settings.timerSeconds.toDouble(),
+                      min: 10,
+                      max: 120,
+                      divisions: 22,
+                      activeColor: AppColors.primaryAccent,
+                      inactiveColor: AppColors.outline,
+                      onChanged: (value) {
+                        // تحديث فوري للإعدادات
+                        ref
+                            .read(settingsProvider.notifier)
+                            .updateTimerSeconds(value.round());
+                      },
+                    ),
+                    const Text(
+                      'Range: 10 - 120 seconds',
+                      style: TextStyle(
+                        color: AppColors.textMuted,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+
+            const SizedBox(height: 16),
+
+            // الصوت
+            SettingsTile(
+              icon: Icons.volume_up,
+              title: 'Sound Effects',
+              subtitle: settings.soundOn ? 'Enabled' : 'Disabled',
+              trailing: Switch(
+                value: settings.soundOn,
+                onChanged: (value) {
+                  ref.read(settingsProvider.notifier).updateSoundOn(value);
+                },
+                activeThumbColor: AppColors.primaryAccent,
+              ),
+            ),
+
+            const SizedBox(height: 32),
+
+            // زر بدء الاختبار
+            SizedBox(
+              width: double.infinity,
+              child: common.PrimaryButton(
+                text: 'Start Quiz',
+                onPressed: _startQuiz,
+                icon: Icons.play_arrow,
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            // زر إعادة تعيين الإعدادات
+            SizedBox(
+              width: double.infinity,
+              child: common.SecondaryButton(
+                text: 'Reset to Defaults',
+                onPressed: () {
+                  ref.read(settingsProvider.notifier).resetToDefaults();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Settings reset to defaults'),
+                      backgroundColor: AppColors.success,
+                    ),
+                  );
+                },
+                icon: Icons.refresh,
+              ),
+            ),
+
+            const SizedBox(height: 32),
+          ],
+        ),
+      ),
+    );
+  }
+}
