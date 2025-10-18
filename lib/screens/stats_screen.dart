@@ -11,7 +11,7 @@ class StatsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final history = ref.watch(historyProvider);
+    final history = ref.watch(historyNotifierProvider);
 
     final totalQuizzes = history.length;
     final avgPercentage = history.isEmpty

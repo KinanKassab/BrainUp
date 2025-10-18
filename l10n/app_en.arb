@@ -1,0 +1,279 @@
+{
+  "@@locale": "en",
+  "appTitle": "BrainUp Quiz",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "welcomeTitle": "Welcome to BrainUp",
+  "@welcomeTitle": {
+    "description": "Welcome screen title"
+  },
+  "welcomeSubtitle": "Test your knowledge and challenge yourself!",
+  "@welcomeSubtitle": {
+    "description": "Welcome screen subtitle"
+  },
+  "playNow": "Play Now",
+  "@playNow": {
+    "description": "Button to start playing quiz"
+  },
+  "about": "About",
+  "@about": {
+    "description": "About button text"
+  },
+  "stats": "Statistics",
+  "@stats": {
+    "description": "Statistics button text"
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings button text"
+  },
+  "quizSettings": "Quiz Settings",
+  "@quizSettings": {
+    "description": "Quiz settings screen title"
+  },
+  "numberOfQuestions": "Number of Questions",
+  "@numberOfQuestions": {
+    "description": "Label for number of questions setting"
+  },
+  "difficulty": "Difficulty",
+  "@difficulty": {
+    "description": "Label for difficulty setting"
+  },
+  "category": "Category",
+  "@category": {
+    "description": "Label for category setting"
+  },
+  "timer": "Timer",
+  "@timer": {
+    "description": "Label for timer setting"
+  },
+  "timerEnabled": "Enable Timer",
+  "@timerEnabled": {
+    "description": "Label for timer enabled setting"
+  },
+  "timerDuration": "Timer Duration (seconds)",
+  "@timerDuration": {
+    "description": "Label for timer duration setting"
+  },
+  "shuffleQuestions": "Shuffle Questions",
+  "@shuffleQuestions": {
+    "description": "Label for shuffle questions setting"
+  },
+  "showExplanations": "Show Explanations",
+  "@showExplanations": {
+    "description": "Label for show explanations setting"
+  },
+  "soundEffects": "Sound Effects",
+  "@soundEffects": {
+    "description": "Label for sound effects setting"
+  },
+  "language": "Language",
+  "@language": {
+    "description": "Label for language setting"
+  },
+  "highContrast": "High Contrast Mode",
+  "@highContrast": {
+    "description": "Label for high contrast mode setting"
+  },
+  "easy": "Easy",
+  "@easy": {
+    "description": "Easy difficulty level"
+  },
+  "medium": "Medium",
+  "@medium": {
+    "description": "Medium difficulty level"
+  },
+  "hard": "Hard",
+  "@hard": {
+    "description": "Hard difficulty level"
+  },
+  "general": "General Knowledge",
+  "@general": {
+    "description": "General knowledge category"
+  },
+  "science": "Science",
+  "@science": {
+    "description": "Science category"
+  },
+  "history": "History",
+  "@history": {
+    "description": "History category"
+  },
+  "geography": "Geography",
+  "@geography": {
+    "description": "Geography category"
+  },
+  "literature": "Literature",
+  "@literature": {
+    "description": "Literature category"
+  },
+  "sports": "Sports",
+  "@sports": {
+    "description": "Sports category"
+  },
+  "entertainment": "Entertainment",
+  "@entertainment": {
+    "description": "Entertainment category"
+  },
+  "startQuiz": "Start Quiz",
+  "@startQuiz": {
+    "description": "Button to start the quiz"
+  },
+  "next": "Next",
+  "@next": {
+    "description": "Next button text"
+  },
+  "previous": "Previous",
+  "@previous": {
+    "description": "Previous button text"
+  },
+  "finish": "Finish",
+  "@finish": {
+    "description": "Finish button text"
+  },
+  "explanation": "Explanation",
+  "@explanation": {
+    "description": "Explanation label"
+  },
+  "correct": "Correct!",
+  "@correct": {
+    "description": "Correct answer feedback"
+  },
+  "incorrect": "Incorrect",
+  "@incorrect": {
+    "description": "Incorrect answer feedback"
+  },
+  "timeUp": "Time's up!",
+  "@timeUp": {
+    "description": "Time up message"
+  },
+  "loading": "Loading...",
+  "@loading": {
+    "description": "Loading message"
+  },
+  "error": "Error",
+  "@error": {
+    "description": "Error message"
+  },
+  "retry": "Retry",
+  "@retry": {
+    "description": "Retry button text"
+  },
+  "noInternetConnection": "No internet connection",
+  "@noInternetConnection": {
+    "description": "No internet connection error message"
+  },
+  "failedToLoadQuestions": "Failed to load questions",
+  "@failedToLoadQuestions": {
+    "description": "Failed to load questions error message"
+  },
+  "quizCompleted": "Quiz Completed!",
+  "@quizCompleted": {
+    "description": "Quiz completed message"
+  },
+  "yourScore": "Your Score",
+  "@yourScore": {
+    "description": "Your score label"
+  },
+  "correctAnswers": "Correct Answers",
+  "@correctAnswers": {
+    "description": "Correct answers label"
+  },
+  "totalQuestions": "Total Questions",
+  "@totalQuestions": {
+    "description": "Total questions label"
+  },
+  "percentage": "Percentage",
+  "@percentage": {
+    "description": "Percentage label"
+  },
+  "playAgain": "Play Again",
+  "@playAgain": {
+    "description": "Play again button text"
+  },
+  "viewResults": "View Results",
+  "@viewResults": {
+    "description": "View results button text"
+  },
+  "backToHome": "Back to Home",
+  "@backToHome": {
+    "description": "Back to home button text"
+  },
+  "quizHistory": "Quiz History",
+  "@quizHistory": {
+    "description": "Quiz history title"
+  },
+  "noHistory": "No quiz history yet",
+  "@noHistory": {
+    "description": "No quiz history message"
+  },
+  "clearHistory": "Clear History",
+  "@clearHistory": {
+    "description": "Clear history button text"
+  },
+  "confirmClearHistory": "Are you sure you want to clear all quiz history?",
+  "@confirmClearHistory": {
+    "description": "Confirm clear history message"
+  },
+  "yes": "Yes",
+  "@yes": {
+    "description": "Yes button text"
+  },
+  "no": "No",
+  "@no": {
+    "description": "No button text"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  "save": "Save",
+  "@save": {
+    "description": "Save button text"
+  },
+  "reset": "Reset",
+  "@reset": {
+    "description": "Reset button text"
+  },
+  "close": "Close",
+  "@close": {
+    "description": "Close button text"
+  },
+  "appSettings": "App Settings",
+  "@appSettings": {
+    "description": "App settings title"
+  },
+  "theme": "Theme",
+  "@theme": {
+    "description": "Theme setting label"
+  },
+  "light": "Light",
+  "@light": {
+    "description": "Light theme option"
+  },
+  "dark": "Dark",
+  "@dark": {
+    "description": "Dark theme option"
+  },
+  "system": "System",
+  "@system": {
+    "description": "System theme option"
+  },
+  "aboutApp": "About BrainUp",
+  "@aboutApp": {
+    "description": "About app title"
+  },
+  "aboutDescription": "BrainUp is a fun and interactive quiz app that helps you learn and test your knowledge across various categories. Customize your quiz experience with flexible settings and track your progress.",
+  "@aboutDescription": {
+    "description": "About app description"
+  },
+  "version": "Version",
+  "@version": {
+    "description": "Version label"
+  },
+  "developedBy": "Developed by",
+  "@developedBy": {
+    "description": "Developed by label"
+  }
+}

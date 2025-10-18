@@ -126,7 +126,7 @@ class _OptionItemState extends State<OptionItem>
     if (widget.isDisabled) {
       if (widget.isCorrect) return AppColors.success.withValues(alpha: 0.2);
       if (widget.isWrong) return AppColors.error.withValues(alpha: 0.2);
-      return AppColors.outline.withValues(alpha: 0.1);
+      return AppColors.borderLight.withValues(alpha: 0.1);
     }
     if (widget.isSelected) {
       return AppColors.primaryAccent.withValues(alpha: 0.2);
@@ -138,10 +138,10 @@ class _OptionItemState extends State<OptionItem>
     if (widget.isDisabled) {
       if (widget.isCorrect) return AppColors.success;
       if (widget.isWrong) return AppColors.error;
-      return AppColors.outline;
+      return AppColors.borderLight;
     }
     if (widget.isSelected) return AppColors.primaryAccent;
-    return AppColors.outline;
+    return AppColors.borderLight;
   }
 
   Color _getNumberColor() {
@@ -382,7 +382,7 @@ class _ResultCircleState extends State<ResultCircle>
                 child: CircularProgressIndicator(
                   value: _animation.value,
                   strokeWidth: 8,
-                  backgroundColor: AppColors.outline,
+                  backgroundColor: AppColors.borderLight,
                   valueColor: const AlwaysStoppedAnimation<Color>(
                     AppColors.scoreYellow,
                   ),
@@ -450,7 +450,7 @@ class AppProgressIndicator extends StatelessWidget {
           height: height,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(height / 2),
-            color: backgroundColor ?? AppColors.outline,
+            color: backgroundColor ?? AppColors.borderLight,
           ),
           child: FractionallySizedBox(
             alignment: Alignment.centerLeft,

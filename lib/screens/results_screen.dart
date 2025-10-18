@@ -58,14 +58,14 @@ class _ResultsScreenState extends ConsumerState<ResultsScreen>
   }
 
   void _tryAgain() {
-    ref.read(quizProvider.notifier).restartQuiz();
+    ref.read(quizNotifierProvider.notifier).restartQuiz();
     Navigator.of(
       context,
     ).pushReplacement(MaterialPageRoute(builder: (_) => const QuizScreen()));
   }
 
   void _backToSettings() {
-    ref.read(quizProvider.notifier).resetQuiz();
+    ref.read(quizNotifierProvider.notifier).resetQuiz();
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(builder: (_) => const TestSettingsScreen()),
       (route) => false,
@@ -79,7 +79,8 @@ class _ResultsScreenState extends ConsumerState<ResultsScreen>
   }
 
   void _shareResults() {
-    final session = ref.read(quizProvider);
+    final sessionState = ref.read(quizNotifierProvider);
+    final session = sessionState.value;
     if (session == null) return;
 
     final score = session.correctCount;
@@ -134,7 +135,8 @@ Great job! 🎉
 
   @override
   Widget build(BuildContext context) {
-    final session = ref.watch(quizProvider);
+    final sessionState = ref.watch(quizNotifierProvider);
+    final session = sessionState.value;
 
     if (session == null) {
       return const AppScaffold(
@@ -161,7 +163,7 @@ Great job! 🎉
       );
       // إضافة دون انتظار UI
       // تجاهل: unawaited_futures
-      ref.read(historyProvider.notifier).addEntry(entry);
+      ref.read(historyNotifierProvider.notifier).addEntry(entry);
     }
 
     return AppScaffold(

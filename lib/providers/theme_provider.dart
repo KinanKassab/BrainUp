@@ -1,394 +1,218 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/legacy.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-/// مقدم خدمة إدارة المظهر
-class ThemeNotifier extends StateNotifier<ThemeMode> {
-  ThemeNotifier() : super(ThemeMode.dark) {
-    _loadTheme();
+part 'theme_provider.g.dart';
+
+@riverpod
+class ThemeNotifier extends _$ThemeNotifier {
+  @override
+  ThemeMode build() {
+    return ThemeMode.system;
   }
 
-  static const String _themeKey = 'theme_mode';
-
-  /// تحميل المظهر من التخزين المحلي
-  Future<void> _loadTheme() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final themeIndex = prefs.getInt(_themeKey);
-      if (themeIndex != null) {
-        state = ThemeMode.values[themeIndex];
-      }
-    } catch (e) {
-      // في حالة الخطأ، استخدم المظهر الافتراضي
-      state = ThemeMode.dark;
-    }
+  void setThemeMode(ThemeMode mode) {
+    state = mode;
   }
 
-  /// حفظ المظهر في التخزين المحلي
-  Future<void> _saveTheme() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setInt(_themeKey, state.index);
-    } catch (e) {
-      // يمكن إضافة معالجة الأخطاء هنا
-    }
+  void setTheme(ThemeMode mode) {
+    state = mode;
   }
 
-  /// تبديل المظهر
   void toggleTheme() {
     state = state == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
-    _saveTheme();
-  }
-
-  /// تعيين المظهر
-  void setTheme(ThemeMode theme) {
-    state = theme;
-    _saveTheme();
   }
 }
 
-/// مقدم خدمة المظهر
-final themeProvider = StateNotifierProvider<ThemeNotifier, ThemeMode>(
-  (ref) => ThemeNotifier(),
-);
-
-/// ألوان التطبيق المخصصة
+// الألوان المخصصة للتطبيق
 class AppColors {
   // الألوان الأساسية
-  static const Color primaryAccent = Color(0xFF2EE6C9);
-  static const Color ctaPurple = Color(0xFF6F45FF);
-  static const Color bgCard = Color(0xFF1A1130);
-  static const Color scoreYellow = Color(0xFFFFC857);
-  static const Color logoPink = Color(0xFFFF4FB0);
-  static const Color textPrimary = Color(0xFFE6F7FF);
-  static const Color textMuted = Color(0xFFA6A0C3);
-
+  static const Color primaryAccent = Color(0xFF6366F1);
+  static const Color secondaryAccent = Color(0xFF8B5CF6);
+  static const Color logoPink = Color(0xFFEC4899);
+  static const Color ctaPurple = Color(0xFF8B5CF6);
+  
+  // ألوان النص
+  static const Color textPrimary = Color(0xFF1F2937);
+  static const Color textSecondary = Color(0xFF6B7280);
+  static const Color textMuted = Color(0xFF9CA3AF);
+  
   // ألوان الخلفية
-  static const Color backgroundStart = Color(0xFF0E0820);
-  static const Color backgroundEnd = Color(0xFF1C1330);
-
+  static const Color bgPrimary = Color(0xFFF9FAFB);
+  static const Color bgSecondary = Color(0xFFFFFFFF);
+  static const Color bgCard = Color(0xFFFFFFFF);
+  static const Color surface = Color(0xFFF3F4F6);
+  
   // ألوان الحالة
-  static const Color success = Color(0xFF4CAF50);
-  static const Color error = Color(0xFFF44336);
-  static const Color warning = Color(0xFFFF9800);
-  static const Color info = Color(0xFF2196F3);
-
+  static const Color success = Color(0xFF10B981);
+  static const Color warning = Color(0xFFF59E0B);
+  static const Color error = Color(0xFFEF4444);
+  static const Color info = Color(0xFF3B82F6);
+  
   // ألوان إضافية
-  static const Color surface = Color(0xFF2A1F3D);
-  static const Color onSurface = Color(0xFFE6F7FF);
-  static const Color outline = Color(0xFF3A2F4D);
+  static const Color scoreYellow = Color(0xFFF59E0B);
+  static const Color borderLight = Color(0xFFE5E7EB);
+  static const Color shadowLight = Color(0x1A000000);
+  static const Color outline = Color(0xFFE5E7EB);
+  static const Color backgroundStart = Color(0xFFF9FAFB);
+  static const Color backgroundEnd = Color(0xFFFFFFFF);
 }
 
-/// موضوع التطبيق المظلم
-final darkTheme = ThemeData(
+// الثيم الفاتح
+final ThemeData lightTheme = ThemeData(
   useMaterial3: true,
-  brightness: Brightness.dark,
-  colorScheme: const ColorScheme.dark(
+  brightness: Brightness.light,
+  colorScheme: const ColorScheme.light(
     primary: AppColors.primaryAccent,
-    secondary: AppColors.ctaPurple,
-    surface: AppColors.surface,
-    onSurface: AppColors.onSurface,
-    outline: AppColors.outline,
+    secondary: AppColors.secondaryAccent,
+    surface: AppColors.bgCard,
+    background: AppColors.bgPrimary,
     error: AppColors.error,
+    onPrimary: Colors.white,
+    onSecondary: Colors.white,
+    onSurface: AppColors.textPrimary,
+    onBackground: AppColors.textPrimary,
+    onError: Colors.white,
   ),
-  scaffoldBackgroundColor: AppColors.backgroundStart,
+  scaffoldBackgroundColor: AppColors.bgPrimary,
+  cardColor: AppColors.bgCard,
   appBarTheme: const AppBarTheme(
     backgroundColor: Colors.transparent,
     elevation: 0,
     foregroundColor: AppColors.textPrimary,
   ),
-  cardTheme: CardThemeData(
-    color: AppColors.bgCard,
-    elevation: 0,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
-  ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      backgroundColor: AppColors.ctaPurple,
+      backgroundColor: AppColors.primaryAccent,
       foregroundColor: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
       elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
     ),
   ),
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: OutlinedButton.styleFrom(
-      foregroundColor: AppColors.textPrimary,
-      side: const BorderSide(color: AppColors.outline),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
+      foregroundColor: AppColors.primaryAccent,
+      side: const BorderSide(color: AppColors.primaryAccent),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
     ),
   ),
   textButtonTheme: TextButtonThemeData(
     style: TextButton.styleFrom(
       foregroundColor: AppColors.primaryAccent,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
     ),
   ),
-  switchTheme: SwitchThemeData(
-    thumbColor: WidgetStateProperty.resolveWith((states) {
-      if (states.contains(WidgetState.selected)) {
-        return AppColors.primaryAccent;
-      }
-      return AppColors.textMuted;
-    }),
-    trackColor: WidgetStateProperty.resolveWith((states) {
-      if (states.contains(WidgetState.selected)) {
-        return AppColors.primaryAccent.withValues(alpha: 0.3);
-      }
-      return AppColors.outline;
-    }),
+  cardTheme: CardThemeData(
+    color: AppColors.bgCard,
+    elevation: 2,
+    shadowColor: AppColors.shadowLight,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(16),
+    ),
   ),
-  sliderTheme: SliderThemeData(
-    activeTrackColor: AppColors.primaryAccent,
-    inactiveTrackColor: AppColors.outline,
-    thumbColor: AppColors.primaryAccent,
-    overlayColor: AppColors.primaryAccent.withValues(alpha: 0.2),
-  ),
-  textTheme: const TextTheme(
-    displayLarge: TextStyle(
-      color: AppColors.textPrimary,
-      fontSize: 32,
-      fontWeight: FontWeight.bold,
+  inputDecorationTheme: InputDecorationTheme(
+    filled: true,
+    fillColor: AppColors.surface,
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: const BorderSide(color: AppColors.borderLight),
     ),
-    displayMedium: TextStyle(
-      color: AppColors.textPrimary,
-      fontSize: 28,
-      fontWeight: FontWeight.bold,
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: const BorderSide(color: AppColors.borderLight),
     ),
-    displaySmall: TextStyle(
-      color: AppColors.textPrimary,
-      fontSize: 24,
-      fontWeight: FontWeight.w600,
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: const BorderSide(color: AppColors.primaryAccent, width: 2),
     ),
-    headlineLarge: TextStyle(
-      color: AppColors.textPrimary,
-      fontSize: 22,
-      fontWeight: FontWeight.w600,
-    ),
-    headlineMedium: TextStyle(
-      color: AppColors.textPrimary,
-      fontSize: 20,
-      fontWeight: FontWeight.w600,
-    ),
-    headlineSmall: TextStyle(
-      color: AppColors.textPrimary,
-      fontSize: 18,
-      fontWeight: FontWeight.w600,
-    ),
-    titleLarge: TextStyle(
-      color: AppColors.textPrimary,
-      fontSize: 16,
-      fontWeight: FontWeight.w600,
-    ),
-    titleMedium: TextStyle(
-      color: AppColors.textPrimary,
-      fontSize: 14,
-      fontWeight: FontWeight.w500,
-    ),
-    titleSmall: TextStyle(
-      color: AppColors.textPrimary,
-      fontSize: 12,
-      fontWeight: FontWeight.w500,
-    ),
-    bodyLarge: TextStyle(
-      color: AppColors.textPrimary,
-      fontSize: 16,
-      fontWeight: FontWeight.normal,
-    ),
-    bodyMedium: TextStyle(
-      color: AppColors.textPrimary,
-      fontSize: 14,
-      fontWeight: FontWeight.normal,
-    ),
-    bodySmall: TextStyle(
-      color: AppColors.textMuted,
-      fontSize: 12,
-      fontWeight: FontWeight.normal,
-    ),
-    labelLarge: TextStyle(
-      color: AppColors.textPrimary,
-      fontSize: 14,
-      fontWeight: FontWeight.w500,
-    ),
-    labelMedium: TextStyle(
-      color: AppColors.textPrimary,
-      fontSize: 12,
-      fontWeight: FontWeight.w500,
-    ),
-    labelSmall: TextStyle(
-      color: AppColors.textMuted,
-      fontSize: 10,
-      fontWeight: FontWeight.w500,
-    ),
+    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
   ),
 );
 
-/// ألوان التطبيق للوضع المضيء
-class LightAppColors {
-  // الألوان الأساسية
-  static const Color primaryAccent = Color(0xFF2EE6C9);
-  static const Color ctaPurple = Color(0xFF6F45FF);
-  static const Color bgCard = Color(0xFFFFFFFF);
-  static const Color scoreYellow = Color(0xFFFFC857);
-  static const Color logoPink = Color(0xFFFF4FB0);
-  static const Color textPrimary = Color(0xFF1A1A1A);
-  static const Color textMuted = Color(0xFF666666);
-
-  // ألوان الخلفية
-  static const Color backgroundStart = Color(0xFFF8F9FA);
-  static const Color backgroundEnd = Color(0xFFE9ECEF);
-
-  // ألوان الحالة
-  static const Color success = Color(0xFF4CAF50);
-  static const Color error = Color(0xFFF44336);
-  static const Color warning = Color(0xFFFF9800);
-  static const Color info = Color(0xFF2196F3);
-
-  // ألوان إضافية
-  static const Color surface = Color(0xFFFFFFFF);
-  static const Color onSurface = Color(0xFF1A1A1A);
-  static const Color outline = Color(0xFFE0E0E0);
-}
-
-/// موضوع التطبيق المضيء
-final lightTheme = ThemeData(
+// الثيم الداكن
+final ThemeData darkTheme = ThemeData(
   useMaterial3: true,
-  brightness: Brightness.light,
-  colorScheme: const ColorScheme.light(
-    primary: LightAppColors.primaryAccent,
-    secondary: LightAppColors.ctaPurple,
-    surface: LightAppColors.surface,
-    onSurface: LightAppColors.onSurface,
-    outline: LightAppColors.outline,
-    error: LightAppColors.error,
+  brightness: Brightness.dark,
+  colorScheme: const ColorScheme.dark(
+    primary: AppColors.primaryAccent,
+    secondary: AppColors.secondaryAccent,
+    surface: Color(0xFF1F2937),
+    background: Color(0xFF111827),
+    error: AppColors.error,
+    onPrimary: Colors.white,
+    onSecondary: Colors.white,
+    onSurface: Colors.white,
+    onBackground: Colors.white,
+    onError: Colors.white,
   ),
-  scaffoldBackgroundColor: LightAppColors.backgroundStart,
+  scaffoldBackgroundColor: const Color(0xFF111827),
+  cardColor: const Color(0xFF1F2937),
   appBarTheme: const AppBarTheme(
     backgroundColor: Colors.transparent,
     elevation: 0,
-    foregroundColor: LightAppColors.textPrimary,
-  ),
-  cardTheme: CardThemeData(
-    color: LightAppColors.bgCard,
-    elevation: 2,
-    shadowColor: Colors.black.withValues(alpha: 0.1),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
+    foregroundColor: Colors.white,
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      backgroundColor: LightAppColors.ctaPurple,
+      backgroundColor: AppColors.primaryAccent,
       foregroundColor: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
-      elevation: 2,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
     ),
   ),
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: OutlinedButton.styleFrom(
-      foregroundColor: LightAppColors.textPrimary,
-      side: const BorderSide(color: LightAppColors.outline),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
+      foregroundColor: AppColors.primaryAccent,
+      side: const BorderSide(color: AppColors.primaryAccent),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
     ),
   ),
   textButtonTheme: TextButtonThemeData(
     style: TextButton.styleFrom(
-      foregroundColor: LightAppColors.primaryAccent,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
+      foregroundColor: AppColors.primaryAccent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
     ),
   ),
-  switchTheme: SwitchThemeData(
-    thumbColor: WidgetStateProperty.resolveWith((states) {
-      if (states.contains(WidgetState.selected)) {
-        return LightAppColors.primaryAccent;
-      }
-      return LightAppColors.textMuted;
-    }),
-    trackColor: WidgetStateProperty.resolveWith((states) {
-      if (states.contains(WidgetState.selected)) {
-        return LightAppColors.primaryAccent.withValues(alpha: 0.3);
-      }
-      return LightAppColors.outline;
-    }),
+  cardTheme: CardThemeData(
+    color: const Color(0xFF1F2937),
+    elevation: 2,
+    shadowColor: const Color(0x1A000000),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(16),
+    ),
   ),
-  sliderTheme: SliderThemeData(
-    activeTrackColor: LightAppColors.primaryAccent,
-    inactiveTrackColor: LightAppColors.outline,
-    thumbColor: LightAppColors.primaryAccent,
-    overlayColor: LightAppColors.primaryAccent.withValues(alpha: 0.2),
-  ),
-  textTheme: const TextTheme(
-    displayLarge: TextStyle(
-      color: LightAppColors.textPrimary,
-      fontSize: 32,
-      fontWeight: FontWeight.bold,
+  inputDecorationTheme: InputDecorationTheme(
+    filled: true,
+    fillColor: const Color(0xFF374151),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: const BorderSide(color: Color(0xFF4B5563)),
     ),
-    displayMedium: TextStyle(
-      color: LightAppColors.textPrimary,
-      fontSize: 28,
-      fontWeight: FontWeight.bold,
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: const BorderSide(color: Color(0xFF4B5563)),
     ),
-    displaySmall: TextStyle(
-      color: LightAppColors.textPrimary,
-      fontSize: 24,
-      fontWeight: FontWeight.w600,
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: const BorderSide(color: AppColors.primaryAccent, width: 2),
     ),
-    headlineLarge: TextStyle(
-      color: LightAppColors.textPrimary,
-      fontSize: 22,
-      fontWeight: FontWeight.w600,
-    ),
-    headlineMedium: TextStyle(
-      color: LightAppColors.textPrimary,
-      fontSize: 20,
-      fontWeight: FontWeight.w600,
-    ),
-    headlineSmall: TextStyle(
-      color: LightAppColors.textPrimary,
-      fontSize: 18,
-      fontWeight: FontWeight.w600,
-    ),
-    titleLarge: TextStyle(
-      color: LightAppColors.textPrimary,
-      fontSize: 16,
-      fontWeight: FontWeight.w600,
-    ),
-    titleMedium: TextStyle(
-      color: LightAppColors.textPrimary,
-      fontSize: 14,
-      fontWeight: FontWeight.w500,
-    ),
-    titleSmall: TextStyle(
-      color: LightAppColors.textPrimary,
-      fontSize: 12,
-      fontWeight: FontWeight.w500,
-    ),
-    bodyLarge: TextStyle(
-      color: LightAppColors.textPrimary,
-      fontSize: 16,
-      fontWeight: FontWeight.normal,
-    ),
-    bodyMedium: TextStyle(
-      color: LightAppColors.textPrimary,
-      fontSize: 14,
-      fontWeight: FontWeight.normal,
-    ),
-    bodySmall: TextStyle(
-      color: LightAppColors.textMuted,
-      fontSize: 12,
-      fontWeight: FontWeight.normal,
-    ),
-    labelLarge: TextStyle(
-      color: LightAppColors.textPrimary,
-      fontSize: 14,
-      fontWeight: FontWeight.w500,
-    ),
-    labelMedium: TextStyle(
-      color: LightAppColors.textPrimary,
-      fontSize: 12,
-      fontWeight: FontWeight.w500,
-    ),
-    labelSmall: TextStyle(
-      color: LightAppColors.textMuted,
-      fontSize: 10,
-      fontWeight: FontWeight.w500,
-    ),
+    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
   ),
 );

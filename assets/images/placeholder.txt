@@ -1,0 +1,9 @@
+This directory will contain illustrative images for quiz questions.
+Sample images should be added here for different categories:
+- science.jpg
+- history.jpg
+- geography.jpg
+- literature.jpg
+- sports.jpg
+- entertainment.jpg
+- general.jpg

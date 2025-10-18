@@ -35,7 +35,7 @@ class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
         color: isSelected ? AppColors.primaryAccent.withValues(alpha: 0.1) : Colors.transparent,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: isSelected ? AppColors.primaryAccent : AppColors.outline,
+          color: isSelected ? AppColors.primaryAccent : AppColors.borderLight,
           width: isSelected ? 2 : 1,
         ),
       ),
@@ -73,7 +73,7 @@ class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
   }
 
   void _showThemeDialog() {
-    final currentMode = ref.read(themeProvider);
+    final currentMode = ref.read(themeNotifierProvider);
 
     showDialog(
       context: context,
@@ -94,7 +94,7 @@ class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
               'System',
               currentMode == ThemeMode.system,
               () {
-                ref.read(themeProvider.notifier).setTheme(ThemeMode.system);
+                ref.read(themeNotifierProvider.notifier).setTheme(ThemeMode.system);
                 Navigator.of(context).pop();
               },
             ),
@@ -103,7 +103,7 @@ class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
               'Light',
               currentMode == ThemeMode.light,
               () {
-                ref.read(themeProvider.notifier).setTheme(ThemeMode.light);
+                ref.read(themeNotifierProvider.notifier).setTheme(ThemeMode.light);
                 Navigator.of(context).pop();
               },
             ),
@@ -112,7 +112,7 @@ class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
               'Dark',
               currentMode == ThemeMode.dark,
               () {
-                ref.read(themeProvider.notifier).setTheme(ThemeMode.dark);
+                ref.read(themeNotifierProvider.notifier).setTheme(ThemeMode.dark);
                 Navigator.of(context).pop();
               },
             ),
@@ -135,7 +135,7 @@ class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
   }
 
   void _showLanguageDialog() {
-    final currentLanguage = ref.read(settingsProvider).language;
+    final currentLanguage = ref.read(settingsNotifierProvider).language;
 
     showDialog(
       context: context,
@@ -156,7 +156,7 @@ class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
               'English',
               currentLanguage == 'en',
               () {
-                ref.read(settingsProvider.notifier).updateLanguage('en');
+                ref.read(settingsNotifierProvider.notifier).updateLanguage('en');
                 Navigator.of(context).pop();
               },
             ),
@@ -165,7 +165,7 @@ class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
               'العربية',
               currentLanguage == 'ar',
               () {
-                ref.read(settingsProvider.notifier).updateLanguage('ar');
+                ref.read(settingsNotifierProvider.notifier).updateLanguage('ar');
                 Navigator.of(context).pop();
               },
             ),
@@ -189,8 +189,8 @@ class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final settings = ref.watch(settingsProvider);
-    final themeMode = ref.watch(themeProvider);
+    final settings = ref.watch(settingsNotifierProvider);
+    final themeMode = ref.watch(themeNotifierProvider);
 
     return common.AppScaffold(
       appBar: AppBar(
@@ -255,7 +255,7 @@ class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
                 value: settings.showExplanations,
                 onChanged: (value) {
                   ref
-                      .read(settingsProvider.notifier)
+                      .read(settingsNotifierProvider.notifier)
                       .updateShowExplanations(value);
                 },
                 activeThumbColor: AppColors.primaryAccent,

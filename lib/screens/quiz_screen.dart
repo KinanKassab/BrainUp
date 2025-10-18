@@ -1,11 +1,19 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:animations/animations.dart';
 import '../widgets/common_widgets.dart' as common;
-import '../widgets/quiz_widgets.dart';
+import '../widgets/timer_widget.dart';
+import '../widgets/question_card.dart';
+import '../widgets/option_item.dart';
+import '../widgets/progress_indicator.dart';
 import '../providers/quiz_provider.dart';
+import '../providers/settings_provider.dart';
+import '../providers/history_provider.dart';
 import '../providers/theme_provider.dart';
+import '../models/quiz_history.dart';
 import 'results_screen.dart';
+import '../l10n/app_localizations.dart';
 
 /// شاشة الأسئلة
 class QuizScreen extends ConsumerStatefulWidget {
@@ -47,7 +55,8 @@ class _QuizScreenState extends ConsumerState<QuizScreen>
   }
 
   void _startTimer() {
-    final session = ref.read(quizProvider);
+    final sessionState = ref.read(quizNotifierProvider);
+    final session = sessionState.value;
     if (session?.settings.timerEnabled == true) {
       _timeRemaining = session!.settings.timerSeconds;
       _timer?.cancel();
@@ -74,7 +83,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen>
         _hasAnswered = true;
         _selectedAnswer = -1; // إجابة خاطئة تلقائياً
       });
-      ref.read(quizProvider.notifier).answerQuestion(-1);
+      ref.read(quizNotifierProvider.notifier).answerQuestion(-1);
       _showExplanation();
     }
   }
@@ -88,26 +97,28 @@ class _QuizScreenState extends ConsumerState<QuizScreen>
     });
 
     _stopTimer();
-    ref.read(quizProvider.notifier).answerQuestion(answerIndex);
+    ref.read(quizNotifierProvider.notifier).answerQuestion(answerIndex);
     _showExplanation();
   }
 
   void _showExplanation() {
-    final session = ref.read(quizProvider);
+    final sessionState = ref.read(quizNotifierProvider);
+    final session = sessionState.value;
     if (session?.settings.showExplanations == true) {
       _explanationController.forward();
     }
   }
 
   void _nextQuestion() {
-    final session = ref.read(quizProvider);
+    final sessionState = ref.read(quizNotifierProvider);
+    final session = sessionState.value;
     if (session == null) return;
 
     if (session.hasNextQuestion) {
-      ref.read(quizProvider.notifier).nextQuestion();
+      ref.read(quizNotifierProvider.notifier).nextQuestion();
       _resetQuestionState();
     } else {
-      ref.read(quizProvider.notifier).completeQuiz();
+      ref.read(quizNotifierProvider.notifier).completeQuiz();
       Navigator.of(context).pushReplacement(
         PageRouteBuilder(
           transitionDuration: const Duration(milliseconds: 380),
@@ -150,9 +161,10 @@ class _QuizScreenState extends ConsumerState<QuizScreen>
   }
 
   void _previousQuestion() {
-    final session = ref.read(quizProvider);
+    final sessionState = ref.read(quizNotifierProvider);
+    final session = sessionState.value;
     if (session?.hasPreviousQuestion == true) {
-      ref.read(quizProvider.notifier).previousQuestion();
+      ref.read(quizNotifierProvider.notifier).previousQuestion();
       _resetQuestionState();
     }
   }
@@ -169,12 +181,14 @@ class _QuizScreenState extends ConsumerState<QuizScreen>
 
   @override
   Widget build(BuildContext context) {
-    final session = ref.watch(quizProvider);
+    final sessionState = ref.watch(quizNotifierProvider);
+    final session = sessionState.value;
+    final l10n = AppLocalizations.of(context)!;
 
     if (session == null) {
       return common.AppScaffold(
         body: Center(
-          child: common.AppLoadingIndicator(message: 'Loading quiz...'),
+          child: common.AppLoadingIndicator(message: l10n.loading),
         ),
       );
     }
@@ -183,7 +197,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen>
     if (question == null) {
       return common.AppScaffold(
         body: Center(
-          child: common.AppLoadingIndicator(message: 'No questions available'),
+          child: common.AppLoadingIndicator(message: l10n.failedToLoadQuestions),
         ),
       );
     }
@@ -227,35 +241,10 @@ class _QuizScreenState extends ConsumerState<QuizScreen>
           if (session.settings.timerEnabled && _timeRemaining > 0)
             Container(
               margin: const EdgeInsets.only(right: 16),
-              child: Center(
-                child: Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: _timeRemaining <= 10
-                        ? AppColors.error.withValues(alpha: 0.2)
-                        : AppColors.primaryAccent.withValues(alpha: 0.2),
-                    border: Border.all(
-                      color: _timeRemaining <= 10
-                          ? AppColors.error
-                          : AppColors.primaryAccent,
-                      width: 2,
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      '$_timeRemaining',
-                      style: TextStyle(
-                        color: _timeRemaining <= 10
-                            ? AppColors.error
-                            : AppColors.primaryAccent,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                ),
+              child: CircularTimerWidget(
+                totalSeconds: session.settings.timerSeconds,
+                remainingSeconds: _timeRemaining,
+                isActive: !_hasAnswered,
               ),
             ),
         ],
@@ -294,6 +283,8 @@ class _QuizScreenState extends ConsumerState<QuizScreen>
                 key: ValueKey(question.id),
                 questionText: question.text,
                 imageUrl: question.imageUrl,
+                category: question.category,
+                difficulty: question.difficulty,
               ),
             ),
 
@@ -362,9 +353,9 @@ class _QuizScreenState extends ConsumerState<QuizScreen>
                                   size: 20,
                                 ),
                                 const SizedBox(width: 8),
-                                const Text(
-                                  'Explanation',
-                                  style: TextStyle(
+                                Text(
+                                  l10n.explanation,
+                                  style: const TextStyle(
                                     color: AppColors.textPrimary,
                                     fontWeight: FontWeight.w600,
                                     fontSize: 16,
@@ -396,7 +387,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen>
               children: [
                 Expanded(
                   child: common.SecondaryButton(
-                    text: 'Previous',
+                    text: l10n.previous,
                     onPressed: session.hasPreviousQuestion
                         ? _previousQuestion
                         : null,
@@ -406,7 +397,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen>
                 const SizedBox(width: 16),
                 Expanded(
                   child: common.PrimaryButton(
-                    text: session.hasNextQuestion ? 'Next' : 'Finish',
+                    text: session.hasNextQuestion ? l10n.next : l10n.finish,
                     onPressed: _hasAnswered ? _nextQuestion : null,
                     icon: session.hasNextQuestion
                         ? Icons.arrow_forward

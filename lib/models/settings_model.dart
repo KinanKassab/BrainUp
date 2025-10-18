@@ -9,6 +9,9 @@ class SettingsModel {
   final bool showExplanations;
   final bool soundOn;
   final String language;
+  final bool highContrastMode;
+  final bool useApiQuestions;
+  final int apiQuestionCount;
 
   const SettingsModel({
     this.numQuestions = 10,
@@ -20,6 +23,9 @@ class SettingsModel {
     this.showExplanations = true,
     this.soundOn = false,
     this.language = 'en',
+    this.highContrastMode = false,
+    this.useApiQuestions = true,
+    this.apiQuestionCount = 10,
   });
 
   /// إنشاء نسخة جديدة من النموذج مع تعديلات
@@ -33,6 +39,9 @@ class SettingsModel {
     bool? showExplanations,
     bool? soundOn,
     String? language,
+    bool? highContrastMode,
+    bool? useApiQuestions,
+    int? apiQuestionCount,
   }) {
     return SettingsModel(
       numQuestions: numQuestions ?? this.numQuestions,
@@ -44,6 +53,9 @@ class SettingsModel {
       showExplanations: showExplanations ?? this.showExplanations,
       soundOn: soundOn ?? this.soundOn,
       language: language ?? this.language,
+      highContrastMode: highContrastMode ?? this.highContrastMode,
+      useApiQuestions: useApiQuestions ?? this.useApiQuestions,
+      apiQuestionCount: apiQuestionCount ?? this.apiQuestionCount,
     );
   }
 
@@ -59,6 +71,9 @@ class SettingsModel {
       'showExplanations': showExplanations,
       'soundOn': soundOn,
       'language': language,
+      'highContrastMode': highContrastMode,
+      'useApiQuestions': useApiQuestions,
+      'apiQuestionCount': apiQuestionCount,
     };
   }
 
@@ -74,6 +89,9 @@ class SettingsModel {
       showExplanations: json['showExplanations'] ?? true,
       soundOn: json['soundOn'] ?? false,
       language: json['language'] ?? 'en',
+      highContrastMode: json['highContrastMode'] ?? false,
+      useApiQuestions: json['useApiQuestions'] ?? true,
+      apiQuestionCount: json['apiQuestionCount'] ?? 10,
     );
   }
 
@@ -89,7 +107,10 @@ class SettingsModel {
         other.shuffle == shuffle &&
         other.showExplanations == showExplanations &&
         other.soundOn == soundOn &&
-        other.language == language;
+        other.language == language &&
+        other.highContrastMode == highContrastMode &&
+        other.useApiQuestions == useApiQuestions &&
+        other.apiQuestionCount == apiQuestionCount;
   }
 
   @override
@@ -104,6 +125,9 @@ class SettingsModel {
       showExplanations,
       soundOn,
       language,
+      highContrastMode,
+      useApiQuestions,
+      apiQuestionCount,
     );
   }
 }

@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'providers/theme_provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:animations/animations.dart';
+import 'providers/theme_provider.dart';
+import 'providers/settings_provider.dart';
 import 'screens/welcome_screen.dart';
+import 'l10n/app_localizations.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,12 +37,24 @@ class QuizzlesApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeMode = ref.watch(themeProvider);
+    final themeMode = ref.watch(themeNotifierProvider);
+    final settings = ref.watch(settingsNotifierProvider);
 
     return MaterialApp(
-      title: 'Quizzles',
+      title: 'BrainUp Quiz',
       debugShowCheckedModeBanner: false,
       themeMode: themeMode,
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en', ''),
+        Locale('ar', ''),
+      ],
+      locale: Locale(settings.language),
       theme: lightTheme.copyWith(
         textTheme: GoogleFonts.poppinsTextTheme(lightTheme.textTheme),
         pageTransitionsTheme: const PageTransitionsTheme(

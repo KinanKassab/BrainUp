@@ -47,7 +47,7 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
         color: isSelected ? AppColors.primaryAccent.withValues(alpha: 0.1) : Colors.transparent,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: isSelected ? AppColors.primaryAccent : AppColors.outline,
+          color: isSelected ? AppColors.primaryAccent : AppColors.borderLight,
           width: isSelected ? 2 : 1,
         ),
       ),
@@ -85,7 +85,7 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
   }
 
   void _showThemeDialog() {
-    final currentMode = ref.read(themeProvider);
+    final currentMode = ref.read(themeNotifierProvider);
 
     showDialog(
       context: context,
@@ -106,7 +106,7 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
               'System',
               currentMode == ThemeMode.system,
               () {
-                ref.read(themeProvider.notifier).setTheme(ThemeMode.system);
+                ref.read(themeNotifierProvider.notifier).setThemeMode(ThemeMode.system);
                 Navigator.of(context).pop();
               },
             ),
@@ -115,7 +115,7 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
               'Light',
               currentMode == ThemeMode.light,
               () {
-                ref.read(themeProvider.notifier).setTheme(ThemeMode.light);
+                ref.read(themeNotifierProvider.notifier).setThemeMode(ThemeMode.light);
                 Navigator.of(context).pop();
               },
             ),
@@ -124,7 +124,7 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
               'Dark',
               currentMode == ThemeMode.dark,
               () {
-                ref.read(themeProvider.notifier).setTheme(ThemeMode.dark);
+                ref.read(themeNotifierProvider.notifier).setThemeMode(ThemeMode.dark);
                 Navigator.of(context).pop();
               },
             ),
@@ -147,8 +147,8 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
   }
 
   void _startQuiz() {
-    final settings = ref.read(settingsProvider);
-    ref.read(quizProvider.notifier).startQuiz(settings);
+    final settings = ref.read(settingsNotifierProvider);
+    ref.read(quizNotifierProvider.notifier).startQuiz(settings);
 
     Navigator.of(context).push(
       PageRouteBuilder(
@@ -169,7 +169,7 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
   }
 
   void _showDifficultyDialog() {
-    final currentDifficulty = ref.read(settingsProvider).difficulty;
+    final currentDifficulty = ref.read(settingsNotifierProvider).difficulty;
 
     showDialog(
       context: context,
@@ -190,7 +190,7 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
               'Easy',
               currentDifficulty == 'easy',
               () {
-                ref.read(settingsProvider.notifier).updateDifficulty('easy');
+                ref.read(settingsNotifierProvider.notifier).updateDifficulty('easy');
                 Navigator.of(context).pop();
               },
             ),
@@ -199,7 +199,7 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
               'Medium',
               currentDifficulty == 'medium',
               () {
-                ref.read(settingsProvider.notifier).updateDifficulty('medium');
+                ref.read(settingsNotifierProvider.notifier).updateDifficulty('medium');
                 Navigator.of(context).pop();
               },
             ),
@@ -208,7 +208,7 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
               'Hard',
               currentDifficulty == 'hard',
               () {
-                ref.read(settingsProvider.notifier).updateDifficulty('hard');
+                ref.read(settingsNotifierProvider.notifier).updateDifficulty('hard');
                 Navigator.of(context).pop();
               },
             ),
@@ -231,7 +231,7 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
   }
 
   void _showCategoryDialog() {
-    final currentCategory = ref.read(settingsProvider).category;
+    final currentCategory = ref.read(settingsNotifierProvider).category;
 
     showDialog(
       context: context,
@@ -252,7 +252,7 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
               'General',
               currentCategory == 'general',
               () {
-                ref.read(settingsProvider.notifier).updateCategory('general');
+                ref.read(settingsNotifierProvider.notifier).updateCategory('general');
                 Navigator.of(context).pop();
               },
             ),
@@ -261,7 +261,7 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
               'Science',
               currentCategory == 'science',
               () {
-                ref.read(settingsProvider.notifier).updateCategory('science');
+                ref.read(settingsNotifierProvider.notifier).updateCategory('science');
                 Navigator.of(context).pop();
               },
             ),
@@ -270,7 +270,7 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
               'History',
               currentCategory == 'history',
               () {
-                ref.read(settingsProvider.notifier).updateCategory('history');
+                ref.read(settingsNotifierProvider.notifier).updateCategory('history');
                 Navigator.of(context).pop();
               },
             ),
@@ -279,7 +279,7 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
               'Literature',
               currentCategory == 'literature',
               () {
-                ref.read(settingsProvider.notifier).updateCategory('literature');
+                ref.read(settingsNotifierProvider.notifier).updateCategory('literature');
                 Navigator.of(context).pop();
               },
             ),
@@ -288,7 +288,7 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
               'Geography',
               currentCategory == 'geography',
               () {
-                ref.read(settingsProvider.notifier).updateCategory('geography');
+                ref.read(settingsNotifierProvider.notifier).updateCategory('geography');
                 Navigator.of(context).pop();
               },
             ),
@@ -311,7 +311,7 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
   }
 
   void _showLanguageDialog() {
-    final currentLanguage = ref.read(settingsProvider).language;
+    final currentLanguage = ref.read(settingsNotifierProvider).language;
 
     showDialog(
       context: context,
@@ -332,7 +332,7 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
               'English',
               currentLanguage == 'en',
               () {
-                ref.read(settingsProvider.notifier).updateLanguage('en');
+                ref.read(settingsNotifierProvider.notifier).updateLanguage('en');
                 Navigator.of(context).pop();
               },
             ),
@@ -341,7 +341,7 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
               'العربية',
               currentLanguage == 'ar',
               () {
-                ref.read(settingsProvider.notifier).updateLanguage('ar');
+                ref.read(settingsNotifierProvider.notifier).updateLanguage('ar');
                 Navigator.of(context).pop();
               },
             ),
@@ -365,7 +365,7 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final settings = ref.watch(settingsProvider);
+    final settings = ref.watch(settingsNotifierProvider);
 
     return common.AppScaffold(
       appBar: AppBar(
@@ -428,14 +428,14 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
                             max: 50,
                             divisions: 45,
                             activeColor: AppColors.primaryAccent,
-                            inactiveColor: AppColors.outline,
+                            inactiveColor: AppColors.borderLight,
                             onChanged: (value) {
                               setState(() {
                                 dialogNumQuestions = value.round();
                               });
                               // تحديث فوري للإعدادات
                               ref
-                                  .read(settingsProvider.notifier)
+                                  .read(settingsNotifierProvider.notifier)
                                   .updateNumQuestions(dialogNumQuestions);
                             },
                           ),
@@ -510,7 +510,7 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
               trailing: Switch(
                 value: settings.timerEnabled,
                 onChanged: (value) {
-                  ref.read(settingsProvider.notifier).updateTimerEnabled(value);
+                  ref.read(settingsNotifierProvider.notifier).updateTimerEnabled(value);
                 },
                 activeThumbColor: AppColors.primaryAccent,
               ),
@@ -538,11 +538,11 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
                       max: 120,
                       divisions: 22,
                       activeColor: AppColors.primaryAccent,
-                      inactiveColor: AppColors.outline,
+                      inactiveColor: AppColors.borderLight,
                       onChanged: (value) {
                         // تحديث فوري للإعدادات
                         ref
-                            .read(settingsProvider.notifier)
+                            .read(settingsNotifierProvider.notifier)
                             .updateTimerSeconds(value.round());
                       },
                     ),
@@ -568,7 +568,7 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
               trailing: Switch(
                 value: settings.soundOn,
                 onChanged: (value) {
-                  ref.read(settingsProvider.notifier).updateSoundOn(value);
+                  ref.read(settingsNotifierProvider.notifier).updateSoundOn(value);
                 },
                 activeThumbColor: AppColors.primaryAccent,
               ),
@@ -594,7 +594,7 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
               child: common.SecondaryButton(
                 text: 'Reset to Defaults',
                 onPressed: () {
-                  ref.read(settingsProvider.notifier).resetToDefaults();
+                  ref.read(settingsNotifierProvider.notifier).resetToDefaults();
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text('Settings reset to defaults'),

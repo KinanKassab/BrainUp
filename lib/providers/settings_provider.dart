@@ -1,16 +1,19 @@
 import 'dart:convert';
-import 'dart:developer' as developer;
-import 'package:flutter_riverpod/legacy.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/settings_model.dart';
 
-/// مقدم خدمة إدارة الإعدادات
-class SettingsNotifier extends StateNotifier<SettingsModel> {
-  SettingsNotifier() : super(const SettingsModel()) {
-    _loadSettings();
-  }
+part 'settings_provider.g.dart';
 
+@riverpod
+class SettingsNotifier extends _$SettingsNotifier {
   static const String _settingsKey = 'quiz_settings';
+
+  @override
+  SettingsModel build() {
+    _loadSettings();
+    return const SettingsModel();
+  }
 
   /// تحميل الإعدادات من التخزين المحلي
   Future<void> _loadSettings() async {
@@ -36,11 +39,7 @@ class SettingsNotifier extends StateNotifier<SettingsModel> {
       await prefs.setString(_settingsKey, settingsJson);
     } catch (e) {
       // يمكن إضافة معالجة الأخطاء هنا
-      developer.log(
-        'Error saving settings',
-        name: 'SettingsNotifier',
-        error: e,
-      );
+      print('Error saving settings: $e');
     }
   }
 
@@ -98,14 +97,27 @@ class SettingsNotifier extends StateNotifier<SettingsModel> {
     _saveSettings();
   }
 
+  /// تحديث الوضع عالي التباين
+  void updateHighContrastMode(bool highContrast) {
+    state = state.copyWith(highContrastMode: highContrast);
+    _saveSettings();
+  }
+
+  /// تحديث استخدام أسئلة API
+  void updateUseApiQuestions(bool useApi) {
+    state = state.copyWith(useApiQuestions: useApi);
+    _saveSettings();
+  }
+
+  /// تحديث عدد أسئلة API
+  void updateApiQuestionCount(int count) {
+    state = state.copyWith(apiQuestionCount: count);
+    _saveSettings();
+  }
+
   /// إعادة تعيين الإعدادات للقيم الافتراضية
   void resetToDefaults() {
     state = const SettingsModel();
     _saveSettings();
   }
 }
-
-/// مقدم خدمة الإعدادات
-final settingsProvider = StateNotifierProvider<SettingsNotifier, SettingsModel>(
-  (ref) => SettingsNotifier(),
-);

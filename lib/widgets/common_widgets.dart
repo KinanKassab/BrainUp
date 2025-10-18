@@ -3,6 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'dart:io';
 import '../providers/theme_provider.dart';
 
+// Light theme colors for backward compatibility
+class LightAppColors {
+  static const Color backgroundStart = Color(0xFFF9FAFB);
+  static const Color backgroundEnd = Color(0xFFFFFFFF);
+  static const Color bgCard = Color(0xFFFFFFFF);
+}
+
 /// سقالة التطبيق الأساسية مع الخلفية المتدرجة
 class AppScaffold extends StatelessWidget {
   final Widget body;
@@ -154,7 +161,7 @@ class SecondaryButton extends StatelessWidget {
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
           foregroundColor: textColor ?? AppColors.textPrimary,
-          side: BorderSide(color: borderColor ?? AppColors.outline, width: 1.5),
+          side: BorderSide(color: borderColor ?? AppColors.borderLight, width: 1.5),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(22),
           ),

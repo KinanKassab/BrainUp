@@ -1,61 +1,97 @@
-import 'package:flutter_riverpod/legacy.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../models/quiz_session.dart';
 import '../models/question.dart';
 import '../models/settings_model.dart';
+import '../services/api_service.dart';
 
-/// مقدم خدمة إدارة جلسة الاختبار
-class QuizNotifier extends StateNotifier<QuizSession?> {
-  QuizNotifier() : super(null);
+part 'quiz_provider.g.dart';
+
+@riverpod
+class QuizNotifier extends _$QuizNotifier {
+  @override
+  AsyncValue<QuizSession?> build() {
+    return const AsyncValue.data(null);
+  }
 
   /// بدء اختبار جديد
-  void startQuiz(SettingsModel settings) {
-    final questions = _generateMockQuestions(settings);
-    final session = QuizSession(
-      settings: settings,
-      questions: questions,
-      startedAt: DateTime.now(),
-    );
-    state = session;
+  Future<void> startQuiz(SettingsModel settings) async {
+    state = const AsyncValue.loading();
+    
+    try {
+      List<Question> questions;
+      
+      if (settings.useApiQuestions) {
+        // جلب الأسئلة من API
+        questions = await ApiService.fetchQuestions(
+          amount: settings.apiQuestionCount,
+          category: settings.category,
+          difficulty: settings.difficulty,
+        );
+      } else {
+        // استخدام الأسئلة المحلية
+        questions = _generateMockQuestions(settings);
+      }
+      
+      final session = QuizSession(
+        settings: settings,
+        questions: questions,
+        startedAt: DateTime.now(),
+      );
+      
+      state = AsyncValue.data(session);
+    } catch (error, stackTrace) {
+      state = AsyncValue.error(error, stackTrace);
+    }
   }
 
   /// إضافة إجابة المستخدم
   void answerQuestion(int answerIndex) {
-    if (state != null) {
-      state = state!.addAnswer(answerIndex);
-    }
+    state.whenData((session) {
+      if (session != null) {
+        state = AsyncValue.data(session.addAnswer(answerIndex));
+      }
+    });
   }
 
   /// الانتقال للسؤال التالي
   void nextQuestion() {
-    if (state != null) {
-      state = state!.nextQuestion();
-    }
+    state.whenData((session) {
+      if (session != null) {
+        state = AsyncValue.data(session.nextQuestion());
+      }
+    });
   }
 
   /// الانتقال للسؤال السابق
   void previousQuestion() {
-    if (state != null) {
-      state = state!.previousQuestion();
-    }
+    state.whenData((session) {
+      if (session != null) {
+        state = AsyncValue.data(session.previousQuestion());
+      }
+    });
   }
 
   /// إنهاء الاختبار
   void completeQuiz() {
-    if (state != null) {
-      state = state!.complete();
-    }
+    state.whenData((session) {
+      if (session != null) {
+        state = AsyncValue.data(session.complete());
+      }
+    });
   }
 
   /// إعادة تعيين الجلسة
   void resetQuiz() {
-    state = null;
+    state = const AsyncValue.data(null);
   }
 
   /// إعادة تشغيل الاختبار بنفس الإعدادات
-  void restartQuiz() {
-    if (state != null) {
-      startQuiz(state!.settings);
-    }
+  Future<void> restartQuiz() async {
+    state.whenData((session) {
+      if (session != null) {
+        startQuiz(session.settings);
+      }
+    });
   }
 
   /// إنشاء أسئلة وهمية للاختبار
@@ -152,52 +188,6 @@ class QuizNotifier extends StateNotifier<QuizSession?> {
         category: 'general',
         difficulty: 'medium',
       ),
-      // المزيد من الأسئلة...
-      Question(
-        id: '11',
-        text: 'Which element has the atomic number 1?',
-        options: ['Helium', 'Hydrogen', 'Lithium', 'Carbon'],
-        correctAnswerIndex: 1,
-        explanation: 'Hydrogen has atomic number 1 in the periodic table.',
-        category: 'science',
-        difficulty: 'easy',
-      ),
-      Question(
-        id: '12',
-        text: 'What is the currency of Japan?',
-        options: ['Won', 'Yuan', 'Yen', 'Dollar'],
-        correctAnswerIndex: 2,
-        explanation: 'The Japanese currency is called Yen.',
-        category: 'general',
-        difficulty: 'easy',
-      ),
-      Question(
-        id: '13',
-        text: 'Who discovered gravity?',
-        options: ['Albert Einstein', 'Isaac Newton', 'Galileo Galilei', 'Nikola Tesla'],
-        correctAnswerIndex: 1,
-        explanation: 'Isaac Newton formulated the law of universal gravitation.',
-        category: 'science',
-        difficulty: 'medium',
-      ),
-      Question(
-        id: '14',
-        text: 'What is the largest ocean on Earth?',
-        options: ['Atlantic', 'Indian', 'Arctic', 'Pacific'],
-        correctAnswerIndex: 3,
-        explanation: 'The Pacific Ocean is the largest ocean on Earth.',
-        category: 'geography',
-        difficulty: 'easy',
-      ),
-      Question(
-        id: '15',
-        text: 'In which continent is the Amazon rainforest located?',
-        options: ['Africa', 'Asia', 'South America', 'North America'],
-        correctAnswerIndex: 2,
-        explanation: 'The Amazon rainforest is located in South America.',
-        category: 'geography',
-        difficulty: 'medium',
-      ),
     ];
 
     // تصفية الأسئلة حسب الفئة والصعوبة
@@ -223,8 +213,3 @@ class QuizNotifier extends StateNotifier<QuizSession?> {
     return filteredQuestions.take(numQuestions).toList();
   }
 }
-
-/// مقدم خدمة الاختبار
-final quizProvider = StateNotifierProvider<QuizNotifier, QuizSession?>(
-  (ref) => QuizNotifier(),
-);

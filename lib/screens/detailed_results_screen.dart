@@ -11,7 +11,8 @@ class DetailedResultsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final session = ref.watch(quizProvider);
+    final sessionState = ref.watch(quizNotifierProvider);
+    final session = sessionState.value;
 
     if (session == null) {
       return common.AppScaffold(

@@ -1,30 +1,43 @@
 import 'dart:convert';
-import 'package:flutter_riverpod/legacy.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/quiz_history.dart';
 
-/// مقدم خدمة محفوظات الاختبارات
-class HistoryNotifier extends StateNotifier<List<QuizHistoryEntry>> {
-  HistoryNotifier() : super(const []) {
-    _load();
-  }
+part 'history_provider.g.dart';
 
+@riverpod
+class HistoryNotifier extends _$HistoryNotifier {
   static const String _key = 'quiz_history_entries_v1';
 
+  @override
+  List<QuizHistoryEntry> build() {
+    _load();
+    return const [];
+  }
+
   Future<void> _load() async {
-    final prefs = await SharedPreferences.getInstance();
-    final raw = prefs.getString(_key);
-    if (raw == null) return;
-    final List<dynamic> decoded = jsonDecode(raw) as List<dynamic>;
-    state = decoded
-        .map((e) => QuizHistoryEntry.fromJson(e as Map<String, dynamic>))
-        .toList();
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final raw = prefs.getString(_key);
+      if (raw == null) return;
+      final List<dynamic> decoded = jsonDecode(raw) as List<dynamic>;
+      state = decoded
+          .map((e) => QuizHistoryEntry.fromJson(e as Map<String, dynamic>))
+          .toList();
+    } catch (e) {
+      print('Error loading history: $e');
+      state = const [];
+    }
   }
 
   Future<void> _save() async {
-    final prefs = await SharedPreferences.getInstance();
-    final raw = jsonEncode(state.map((e) => e.toJson()).toList());
-    await prefs.setString(_key, raw);
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final raw = jsonEncode(state.map((e) => e.toJson()).toList());
+      await prefs.setString(_key, raw);
+    } catch (e) {
+      print('Error saving history: $e');
+    }
   }
 
   Future<void> addEntry(QuizHistoryEntry entry) async {
@@ -40,9 +53,3 @@ class HistoryNotifier extends StateNotifier<List<QuizHistoryEntry>> {
     await _save();
   }
 }
-
-/// موفر محفوظات الاختبارات
-final historyProvider =
-    StateNotifierProvider<HistoryNotifier, List<QuizHistoryEntry>>(
-      (ref) => HistoryNotifier(),
-    );
