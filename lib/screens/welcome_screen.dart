@@ -60,14 +60,14 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
         backgroundColor: AppColors.bgCard,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
         title: const Text(
-          'About Quizzles',
+          'About Master Math',
           style: TextStyle(
             color: AppColors.textPrimary,
             fontWeight: FontWeight.bold,
           ),
         ),
         content: const Text(
-          'Quizzles is a fun and interactive quiz app that helps you learn and test your knowledge across various categories. Customize your quiz experience with flexible settings and track your progress.',
+          'Master Math is a comprehensive mathematics training app that helps you develop your mathematical skills through structured practice. Choose from different categories and levels to challenge yourself and track your progress.',
           style: TextStyle(color: AppColors.textMuted, height: 1.5),
         ),
         actions: [
@@ -151,8 +151,8 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
                               ),
                             ],
                           ),
-                          child: const Icon(
-                            Icons.quiz,
+                            child: const Icon(
+                            Icons.calculate,
                             size: 60,
                             color: Colors.white,
                           ),
@@ -160,7 +160,7 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
                       ),
                       const SizedBox(height: 24),
                       const Text(
-                        'Quizzles',
+                        'Master Math',
                         style: TextStyle(
                           fontSize: 36,
                           fontWeight: FontWeight.bold,
@@ -187,7 +187,7 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
                     child: Column(
                       children: [
                         const Text(
-                          'Let\'s Play!',
+                          'Master Mathematics!',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
@@ -196,7 +196,7 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
                         ),
                         const SizedBox(height: 8),
                         const Text(
-                          'Play now and Level up',
+                          'Train your mind and improve your skills',
                           style: TextStyle(
                             fontSize: 16,
                             color: AppColors.textMuted,

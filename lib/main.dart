@@ -28,12 +28,12 @@ void main() {
     ),
   );
 
-  runApp(const ProviderScope(child: QuizzlesApp()));
+  runApp(const ProviderScope(child: MasterMathApp()));
 }
 
 /// التطبيق الرئيسي
-class QuizzlesApp extends ConsumerWidget {
-  const QuizzlesApp({super.key});
+class MasterMathApp extends ConsumerWidget {
+  const MasterMathApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -41,7 +41,7 @@ class QuizzlesApp extends ConsumerWidget {
     final settings = ref.watch(settingsNotifierProvider);
 
     return MaterialApp(
-      title: 'BrainUp Quiz',
+      title: 'Master Math',
       debugShowCheckedModeBanner: false,
       themeMode: themeMode,
       localizationsDelegates: [

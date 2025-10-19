@@ -61,6 +61,12 @@ class SettingsNotifier extends _$SettingsNotifier {
     _saveSettings();
   }
 
+  /// تحديث المستوى
+  void updateLevel(String level) {
+    state = state.copyWith(level: level);
+    _saveSettings();
+  }
+
   /// تحديث تفعيل المؤقت
   void updateTimerEnabled(bool enabled) {
     state = state.copyWith(timerEnabled: enabled);

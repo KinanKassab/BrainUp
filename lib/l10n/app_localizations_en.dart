@@ -9,13 +9,13 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'BrainUp Quiz';
+  String get appTitle => 'Master Math';
 
   @override
-  String get welcomeTitle => 'Welcome to BrainUp';
+  String get welcomeTitle => 'Welcome to Master Math';
 
   @override
-  String get welcomeSubtitle => 'Test your knowledge and challenge yourself!';
+  String get welcomeSubtitle => 'Master mathematics and improve your skills!';
 
   @override
   String get playNow => 'Play Now';
@@ -36,7 +36,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get numberOfQuestions => 'Number of Questions';
 
   @override
-  String get difficulty => 'Difficulty';
+  String get level => 'Level';
 
   @override
   String get category => 'Category';
@@ -75,19 +75,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hard => 'Hard';
 
   @override
-  String get general => 'General Knowledge';
+  String get superMind => 'Super Mind';
 
   @override
-  String get science => 'Science';
+  String get amazingFingers => 'Amazing Fingers';
 
   @override
-  String get history => 'History';
-
-  @override
-  String get geography => 'Geography';
-
-  @override
-  String get literature => 'Literature';
+  String get mentalCalculation => 'Mental Calculation';
 
   @override
   String get sports => 'Sports';
@@ -205,11 +199,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get system => 'System';
 
   @override
-  String get aboutApp => 'About BrainUp';
+  String get aboutApp => 'About Master Math';
 
   @override
   String get aboutDescription =>
-      'BrainUp is a fun and interactive quiz app that helps you learn and test your knowledge across various categories. Customize your quiz experience with flexible settings and track your progress.';
+      'Master Math is a comprehensive mathematics training app that helps you develop your mathematical skills through structured practice. Choose from different categories and levels to challenge yourself and track your progress.';
 
   @override
   String get version => 'Version';

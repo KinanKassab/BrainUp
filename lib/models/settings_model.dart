@@ -3,6 +3,7 @@ class SettingsModel {
   final int numQuestions;
   final String difficulty;
   final String category;
+  final String level;
   final bool timerEnabled;
   final int timerSeconds;
   final bool shuffle;
@@ -16,7 +17,8 @@ class SettingsModel {
   const SettingsModel({
     this.numQuestions = 10,
     this.difficulty = 'medium',
-    this.category = 'general',
+    this.category = 'super_mind',
+    this.level = '0',
     this.timerEnabled = false,
     this.timerSeconds = 30,
     this.shuffle = true,
@@ -33,6 +35,7 @@ class SettingsModel {
     int? numQuestions,
     String? difficulty,
     String? category,
+    String? level,
     bool? timerEnabled,
     int? timerSeconds,
     bool? shuffle,
@@ -47,6 +50,7 @@ class SettingsModel {
       numQuestions: numQuestions ?? this.numQuestions,
       difficulty: difficulty ?? this.difficulty,
       category: category ?? this.category,
+      level: level ?? this.level,
       timerEnabled: timerEnabled ?? this.timerEnabled,
       timerSeconds: timerSeconds ?? this.timerSeconds,
       shuffle: shuffle ?? this.shuffle,
@@ -65,6 +69,7 @@ class SettingsModel {
       'numQuestions': numQuestions,
       'difficulty': difficulty,
       'category': category,
+      'level': level,
       'timerEnabled': timerEnabled,
       'timerSeconds': timerSeconds,
       'shuffle': shuffle,
@@ -82,7 +87,8 @@ class SettingsModel {
     return SettingsModel(
       numQuestions: json['numQuestions'] ?? 10,
       difficulty: json['difficulty'] ?? 'medium',
-      category: json['category'] ?? 'general',
+      category: json['category'] ?? 'super_mind',
+      level: json['level'] ?? '0',
       timerEnabled: json['timerEnabled'] ?? false,
       timerSeconds: json['timerSeconds'] ?? 30,
       shuffle: json['shuffle'] ?? true,
@@ -102,6 +108,7 @@ class SettingsModel {
         other.numQuestions == numQuestions &&
         other.difficulty == difficulty &&
         other.category == category &&
+        other.level == level &&
         other.timerEnabled == timerEnabled &&
         other.timerSeconds == timerSeconds &&
         other.shuffle == shuffle &&
@@ -119,6 +126,7 @@ class SettingsModel {
       numQuestions,
       difficulty,
       category,
+      level,
       timerEnabled,
       timerSeconds,
       shuffle,

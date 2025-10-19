@@ -101,19 +101,19 @@ abstract class AppLocalizations {
   /// The title of the application
   ///
   /// In en, this message translates to:
-  /// **'BrainUp Quiz'**
+  /// **'Master Math'**
   String get appTitle;
 
   /// Welcome screen title
   ///
   /// In en, this message translates to:
-  /// **'Welcome to BrainUp'**
+  /// **'Welcome to Master Math'**
   String get welcomeTitle;
 
   /// Welcome screen subtitle
   ///
   /// In en, this message translates to:
-  /// **'Test your knowledge and challenge yourself!'**
+  /// **'Master mathematics and improve your skills!'**
   String get welcomeSubtitle;
 
   /// Button to start playing quiz
@@ -152,11 +152,11 @@ abstract class AppLocalizations {
   /// **'Number of Questions'**
   String get numberOfQuestions;
 
-  /// Label for difficulty setting
+  /// Label for level setting
   ///
   /// In en, this message translates to:
-  /// **'Difficulty'**
-  String get difficulty;
+  /// **'Level'**
+  String get level;
 
   /// Label for category setting
   ///
@@ -230,35 +230,23 @@ abstract class AppLocalizations {
   /// **'Hard'**
   String get hard;
 
-  /// General knowledge category
+  /// Super Mind category
   ///
   /// In en, this message translates to:
-  /// **'General Knowledge'**
-  String get general;
+  /// **'Super Mind'**
+  String get superMind;
 
-  /// Science category
+  /// Amazing Fingers category
   ///
   /// In en, this message translates to:
-  /// **'Science'**
-  String get science;
+  /// **'Amazing Fingers'**
+  String get amazingFingers;
 
-  /// History category
+  /// Mental Calculation category
   ///
   /// In en, this message translates to:
-  /// **'History'**
-  String get history;
-
-  /// Geography category
-  ///
-  /// In en, this message translates to:
-  /// **'Geography'**
-  String get geography;
-
-  /// Literature category
-  ///
-  /// In en, this message translates to:
-  /// **'Literature'**
-  String get literature;
+  /// **'Mental Calculation'**
+  String get mentalCalculation;
 
   /// Sports category
   ///
@@ -491,13 +479,13 @@ abstract class AppLocalizations {
   /// About app title
   ///
   /// In en, this message translates to:
-  /// **'About BrainUp'**
+  /// **'About Master Math'**
   String get aboutApp;
 
   /// About app description
   ///
   /// In en, this message translates to:
-  /// **'BrainUp is a fun and interactive quiz app that helps you learn and test your knowledge across various categories. Customize your quiz experience with flexible settings and track your progress.'**
+  /// **'Master Math is a comprehensive mathematics training app that helps you develop your mathematical skills through structured practice. Choose from different categories and levels to challenge yourself and track your progress.'**
   String get aboutDescription;
 
   /// Version label

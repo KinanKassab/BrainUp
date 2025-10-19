@@ -17,15 +17,19 @@ class TestSettingsScreen extends ConsumerStatefulWidget {
 }
 
 class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
-  final List<String> _difficulties = ['easy', 'medium', 'hard'];
   final List<String> _categories = [
-    'general',
-    'science',
-    'history',
-    'literature',
-    'geography',
+    'super_mind',
+    'amazing_fingers',
+    'mental_calculation',
   ];
   final List<String> _languages = ['en', 'ar'];
+  
+  // Category-specific levels
+  final Map<String, List<String>> _categoryLevels = {
+    'super_mind': ['0', '1', '2'],
+    'amazing_fingers': ['1', '2', '3'],
+    'mental_calculation': ['0', '1', '2', '3', '4', '5', '6'],
+  };
 
   String _themeLabel(ThemeMode mode) {
     switch (mode) {
@@ -35,6 +39,19 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
         return 'Light';
       case ThemeMode.dark:
         return 'Dark';
+    }
+  }
+
+  String _getCategoryDisplayName(String category) {
+    switch (category) {
+      case 'super_mind':
+        return 'Super Mind';
+      case 'amazing_fingers':
+        return 'Amazing Fingers';
+      case 'mental_calculation':
+        return 'Mental Calculation';
+      default:
+        return 'Super Mind';
     }
   }
 
@@ -168,8 +185,11 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
     );
   }
 
-  void _showDifficultyDialog() {
-    final currentDifficulty = ref.read(settingsNotifierProvider).difficulty;
+  void _showLevelDialog() {
+    final currentSettings = ref.read(settingsNotifierProvider);
+    final currentCategory = currentSettings.category;
+    final currentLevel = currentSettings.level;
+    final availableLevels = _categoryLevels[currentCategory] ?? ['0'];
 
     showDialog(
       context: context,
@@ -177,7 +197,7 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
         backgroundColor: AppColors.bgCard,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
         title: const Text(
-          'Select Difficulty',
+          'Select Level',
           style: TextStyle(
             color: AppColors.textPrimary,
             fontWeight: FontWeight.bold,
@@ -185,34 +205,21 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
-          children: [
-            _buildVerticalOption(
-              'Easy',
-              currentDifficulty == 'easy',
-              () {
-                ref.read(settingsNotifierProvider.notifier).updateDifficulty('easy');
-                Navigator.of(context).pop();
-              },
-            ),
-            const SizedBox(height: 8),
-            _buildVerticalOption(
-              'Medium',
-              currentDifficulty == 'medium',
-              () {
-                ref.read(settingsNotifierProvider.notifier).updateDifficulty('medium');
-                Navigator.of(context).pop();
-              },
-            ),
-            const SizedBox(height: 8),
-            _buildVerticalOption(
-              'Hard',
-              currentDifficulty == 'hard',
-              () {
-                ref.read(settingsNotifierProvider.notifier).updateDifficulty('hard');
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
+          children: availableLevels.map((level) {
+            return Column(
+              children: [
+                _buildVerticalOption(
+                  'Level $level',
+                  currentLevel == level,
+                  () {
+                    ref.read(settingsNotifierProvider.notifier).updateLevel(level);
+                    Navigator.of(context).pop();
+                  },
+                ),
+                if (level != availableLevels.last) const SizedBox(height: 8),
+              ],
+            );
+          }).toList(),
         ),
         actions: [
           TextButton(
@@ -249,46 +256,34 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             _buildVerticalOption(
-              'General',
-              currentCategory == 'general',
+              'Super Mind',
+              currentCategory == 'super_mind',
               () {
-                ref.read(settingsNotifierProvider.notifier).updateCategory('general');
+                ref.read(settingsNotifierProvider.notifier).updateCategory('super_mind');
+                // Reset to first level when changing category
+                ref.read(settingsNotifierProvider.notifier).updateLevel('0');
                 Navigator.of(context).pop();
               },
             ),
             const SizedBox(height: 8),
             _buildVerticalOption(
-              'Science',
-              currentCategory == 'science',
+              'Amazing Fingers',
+              currentCategory == 'amazing_fingers',
               () {
-                ref.read(settingsNotifierProvider.notifier).updateCategory('science');
+                ref.read(settingsNotifierProvider.notifier).updateCategory('amazing_fingers');
+                // Reset to first level when changing category
+                ref.read(settingsNotifierProvider.notifier).updateLevel('1');
                 Navigator.of(context).pop();
               },
             ),
             const SizedBox(height: 8),
             _buildVerticalOption(
-              'History',
-              currentCategory == 'history',
+              'Mental Calculation',
+              currentCategory == 'mental_calculation',
               () {
-                ref.read(settingsNotifierProvider.notifier).updateCategory('history');
-                Navigator.of(context).pop();
-              },
-            ),
-            const SizedBox(height: 8),
-            _buildVerticalOption(
-              'Literature',
-              currentCategory == 'literature',
-              () {
-                ref.read(settingsNotifierProvider.notifier).updateCategory('literature');
-                Navigator.of(context).pop();
-              },
-            ),
-            const SizedBox(height: 8),
-            _buildVerticalOption(
-              'Geography',
-              currentCategory == 'geography',
-              () {
-                ref.read(settingsNotifierProvider.notifier).updateCategory('geography');
+                ref.read(settingsNotifierProvider.notifier).updateCategory('mental_calculation');
+                // Reset to first level when changing category
+                ref.read(settingsNotifierProvider.notifier).updateLevel('0');
                 Navigator.of(context).pop();
               },
             ),
@@ -470,32 +465,32 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
 
             const SizedBox(height: 16),
 
-            // مستوى الصعوبة
-            SettingsTile(
-              icon: Icons.trending_up,
-              title: 'Difficulty',
-              subtitle: settings.difficulty.toUpperCase(),
-              trailing: const Icon(
-                Icons.arrow_forward_ios,
-                color: AppColors.textMuted,
-                size: 16,
-              ),
-              onTap: _showDifficultyDialog,
-            ),
-
-            const SizedBox(height: 16),
-
             // الفئة
             SettingsTile(
               icon: Icons.category,
               title: 'Category',
-              subtitle: settings.category.toUpperCase(),
+              subtitle: _getCategoryDisplayName(settings.category),
               trailing: const Icon(
                 Icons.arrow_forward_ios,
                 color: AppColors.textMuted,
                 size: 16,
               ),
               onTap: _showCategoryDialog,
+            ),
+
+            const SizedBox(height: 16),
+
+            // المستوى
+            SettingsTile(
+              icon: Icons.trending_up,
+              title: 'Level',
+              subtitle: 'Level ${settings.level}',
+              trailing: const Icon(
+                Icons.arrow_forward_ios,
+                color: AppColors.textMuted,
+                size: 16,
+              ),
+              onTap: _showLevelDialog,
             ),
 
             const SizedBox(height: 16),

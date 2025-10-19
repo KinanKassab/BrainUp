@@ -9,13 +9,13 @@ class AppLocalizationsAr extends AppLocalizations {
   AppLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
-  String get appTitle => 'برين آب - اختبار الذكاء';
+  String get appTitle => 'ماستر ماث - تدريب الرياضيات';
 
   @override
-  String get welcomeTitle => 'مرحباً بك في برين آب';
+  String get welcomeTitle => 'مرحباً بك في ماستر ماث';
 
   @override
-  String get welcomeSubtitle => 'اختبر معرفتك وتحدى نفسك!';
+  String get welcomeSubtitle => 'أتقن الرياضيات وحسّن مهاراتك!';
 
   @override
   String get playNow => 'العب الآن';
@@ -36,7 +36,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get numberOfQuestions => 'عدد الأسئلة';
 
   @override
-  String get difficulty => 'مستوى الصعوبة';
+  String get level => 'المستوى';
 
   @override
   String get category => 'الفئة';
@@ -75,19 +75,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get hard => 'صعب';
 
   @override
-  String get general => 'المعرفة العامة';
+  String get superMind => 'العقل الخارق';
 
   @override
-  String get science => 'العلوم';
+  String get amazingFingers => 'الأصابع المذهلة';
 
   @override
-  String get history => 'التاريخ';
-
-  @override
-  String get geography => 'الجغرافيا';
-
-  @override
-  String get literature => 'الأدب';
+  String get mentalCalculation => 'الحساب الذهني';
 
   @override
   String get sports => 'الرياضة';
@@ -205,11 +199,11 @@ class AppLocalizationsAr extends AppLocalizations {
   String get system => 'النظام';
 
   @override
-  String get aboutApp => 'حول برين آب';
+  String get aboutApp => 'حول ماستر ماث';
 
   @override
   String get aboutDescription =>
-      'برين آب هو تطبيق اختبار تفاعلي وممتع يساعدك على التعلم واختبار معرفتك في فئات مختلفة. قم بتخصيص تجربة الاختبار بإعدادات مرنة وتتبع تقدمك.';
+      'ماستر ماث هو تطبيق تدريب شامل للرياضيات يساعدك على تطوير مهاراتك الرياضية من خلال الممارسة المنظمة. اختر من فئات ومستويات مختلفة لتحدي نفسك وتتبع تقدمك.';
 
   @override
   String get version => 'الإصدار';

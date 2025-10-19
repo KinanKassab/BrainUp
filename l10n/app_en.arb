@@ -1,14 +1,14 @@
 {
   "@@locale": "en",
-  "appTitle": "BrainUp Quiz",
+  "appTitle": "Master Math",
   "@appTitle": {
     "description": "The title of the application"
   },
-  "welcomeTitle": "Welcome to BrainUp",
+  "welcomeTitle": "Welcome to Master Math",
   "@welcomeTitle": {
     "description": "Welcome screen title"
   },
-  "welcomeSubtitle": "Test your knowledge and challenge yourself!",
+  "welcomeSubtitle": "Master mathematics and improve your skills!",
   "@welcomeSubtitle": {
     "description": "Welcome screen subtitle"
   },
@@ -36,9 +36,9 @@
   "@numberOfQuestions": {
     "description": "Label for number of questions setting"
   },
-  "difficulty": "Difficulty",
-  "@difficulty": {
-    "description": "Label for difficulty setting"
+  "level": "Level",
+  "@level": {
+    "description": "Label for level setting"
   },
   "category": "Category",
   "@category": {
@@ -88,25 +88,17 @@
   "@hard": {
     "description": "Hard difficulty level"
   },
-  "general": "General Knowledge",
-  "@general": {
-    "description": "General knowledge category"
+  "superMind": "Super Mind",
+  "@superMind": {
+    "description": "Super Mind category"
   },
-  "science": "Science",
-  "@science": {
-    "description": "Science category"
+  "amazingFingers": "Amazing Fingers",
+  "@amazingFingers": {
+    "description": "Amazing Fingers category"
   },
-  "history": "History",
-  "@history": {
-    "description": "History category"
-  },
-  "geography": "Geography",
-  "@geography": {
-    "description": "Geography category"
-  },
-  "literature": "Literature",
-  "@literature": {
-    "description": "Literature category"
+  "mentalCalculation": "Mental Calculation",
+  "@mentalCalculation": {
+    "description": "Mental Calculation category"
   },
   "sports": "Sports",
   "@sports": {
@@ -260,11 +252,11 @@
   "@system": {
     "description": "System theme option"
   },
-  "aboutApp": "About BrainUp",
+  "aboutApp": "About Master Math",
   "@aboutApp": {
     "description": "About app title"
   },
-  "aboutDescription": "BrainUp is a fun and interactive quiz app that helps you learn and test your knowledge across various categories. Customize your quiz experience with flexible settings and track your progress.",
+  "aboutDescription": "Master Math is a comprehensive mathematics training app that helps you develop your mathematical skills through structured practice. Choose from different categories and levels to challenge yourself and track your progress.",
   "@aboutDescription": {
     "description": "About app description"
   },
