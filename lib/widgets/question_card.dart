@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../providers/theme_provider.dart';
+import 'common_widgets.dart';
 
 /// بطاقة السؤال المحسنة مع دعم الصور
 class QuestionCard extends StatelessWidget {
@@ -23,16 +24,13 @@ class QuestionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
-      child: Card(
-        elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+      child: AppCard(
+        isGlassmorphism: true,
+        padding: const EdgeInsets.all(20),
+        borderRadius: BorderRadius.circular(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
               // رأس البطاقة مع الفئة والصعوبة
               Row(
                 children: [
@@ -63,7 +61,6 @@ class QuestionCard extends StatelessWidget {
             ],
           ),
         ),
-      ),
     );
   }
 
@@ -72,10 +69,10 @@ class QuestionCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: categoryData['color'].withOpacity(0.1),
+        color: categoryData['color'].withValues(alpha:0.1),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: categoryData['color'].withOpacity(0.3),
+          color: categoryData['color'].withValues(alpha:0.3),
           width: 1,
         ),
       ),
@@ -106,10 +103,10 @@ class QuestionCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: difficultyData['color'].withOpacity(0.1),
+        color: difficultyData['color'].withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: difficultyData['color'].withOpacity(0.3),
+          color: difficultyData['color'].withValues(alpha: 0.3),
           width: 1,
         ),
       ),
@@ -139,7 +136,7 @@ class QuestionCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: AppColors.primaryAccent.withOpacity(0.1),
+        color: AppColors.primaryAccent.withValues(alpha:0.1),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
@@ -164,7 +161,7 @@ class QuestionCard extends StatelessWidget {
         placeholder: (context, url) => Container(
           height: 200,
           decoration: BoxDecoration(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withValues(alpha:0.1),
             borderRadius: BorderRadius.circular(12),
           ),
           child: const Center(
@@ -174,7 +171,7 @@ class QuestionCard extends StatelessWidget {
         errorWidget: (context, url, error) => Container(
           height: 200,
           decoration: BoxDecoration(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withValues(alpha:0.1),
             borderRadius: BorderRadius.circular(12),
           ),
           child: const Center(

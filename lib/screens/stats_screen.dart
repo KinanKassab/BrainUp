@@ -21,10 +21,12 @@ class StatsScreen extends ConsumerWidget {
 
     return common.AppScaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Stats',
           style: TextStyle(
-            color: AppColors.textPrimary,
+            color: Theme.of(context).brightness == Brightness.dark 
+              ? AppColors.textPrimaryDark 
+              : AppColors.textPrimary,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -38,11 +40,13 @@ class StatsScreen extends ConsumerWidget {
           children: [
             const SizedBox(height: 16),
 
-            // بطاقات ملخص
+            // بطاقات ملخص مع تدرجات
             Row(
               children: [
                 Expanded(
                   child: common.AppCard(
+                    isGlassmorphism: true,
+                    gradientColors: AppColors.primaryGradient,
                     padding: const EdgeInsets.all(16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,16 +54,17 @@ class StatsScreen extends ConsumerWidget {
                         const Text(
                           'Total Quizzes',
                           style: TextStyle(
-                            color: AppColors.textMuted,
+                            color: Colors.white70,
                             fontSize: 12,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                         const SizedBox(height: 8),
                         Text(
                           '$totalQuizzes',
                           style: const TextStyle(
-                            color: AppColors.textPrimary,
-                            fontSize: 24,
+                            color: Colors.white,
+                            fontSize: 28,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -70,6 +75,8 @@ class StatsScreen extends ConsumerWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: common.AppCard(
+                    isGlassmorphism: true,
+                    gradientColors: AppColors.successGradient,
                     padding: const EdgeInsets.all(16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,16 +84,17 @@ class StatsScreen extends ConsumerWidget {
                         const Text(
                           'Average Score',
                           style: TextStyle(
-                            color: AppColors.textMuted,
+                            color: Colors.white70,
                             fontSize: 12,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          '${avgPercentage.toStringAsFixed(1)}% ',
+                          '${avgPercentage.toStringAsFixed(1)}%',
                           style: const TextStyle(
-                            color: AppColors.textPrimary,
-                            fontSize: 24,
+                            color: Colors.white,
+                            fontSize: 28,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -99,50 +107,128 @@ class StatsScreen extends ConsumerWidget {
 
             const SizedBox(height: 24),
 
-            // مخطط خطي للنتائج الأخيرة
+            // مخطط خطي للنتائج الأخيرة مع تدرج
             if (history.isNotEmpty) ...[
               common.AppCard(
-                padding: const EdgeInsets.all(16),
-                child: SizedBox(
-                  height: 180,
-                  child: LineChart(
-                    LineChartData(
-                      gridData: const FlGridData(show: false),
-                      titlesData: const FlTitlesData(show: false),
-                      borderData: FlBorderData(show: false),
-                      lineBarsData: [
-                        LineChartBarData(
-                          isCurved: true,
-                          color: AppColors.primaryAccent,
-                          barWidth: 3,
-                          dotData: const FlDotData(show: false),
-                          belowBarData: BarAreaData(
+                isGlassmorphism: true,
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Performance Trend',
+                      style: TextStyle(
+                        color: Theme.of(context).brightness == Brightness.dark 
+                          ? AppColors.textPrimaryDark 
+                          : AppColors.textPrimary,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      height: 180,
+                      child: LineChart(
+                        LineChartData(
+                          gridData: FlGridData(
                             show: true,
-                            color: AppColors.primaryAccent.withValues(
-                              alpha: 0.15,
+                            drawVerticalLine: false,
+                            horizontalInterval: 20,
+                            getDrawingHorizontalLine: (value) {
+                              return FlLine(
+                                color: AppColors.borderLight.withValues(alpha: 0.3),
+                                strokeWidth: 1,
+                              );
+                            },
+                          ),
+                          titlesData: FlTitlesData(
+                            show: true,
+                            rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                            topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                            bottomTitles: AxisTitles(
+                              sideTitles: SideTitles(
+                                showTitles: true,
+                                reservedSize: 30,
+                                interval: 1,
+                                getTitlesWidget: (value, meta) {
+                                  return Text(
+                                    '${value.toInt()}',
+                                    style: const TextStyle(
+                                      color: AppColors.textMuted,
+                                      fontSize: 10,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                            leftTitles: AxisTitles(
+                              sideTitles: SideTitles(
+                                showTitles: true,
+                                interval: 20,
+                                getTitlesWidget: (value, meta) {
+                                  return Text(
+                                    '${value.toInt()}%',
+                                    style: const TextStyle(
+                                      color: AppColors.textMuted,
+                                      fontSize: 10,
+                                    ),
+                                  );
+                                },
+                              ),
                             ),
                           ),
-                          spots: List.generate(history.length, (i) {
-                            final e = history[history.length - 1 - i];
-                            // x: الأحدث على اليمين
-                            return FlSpot(i.toDouble(), e.percentage);
-                          }).reversed.toList(),
+                          borderData: FlBorderData(show: false),
+                          lineBarsData: [
+                            LineChartBarData(
+                              isCurved: true,
+                              color: AppColors.primaryAccent,
+                              barWidth: 4,
+                              dotData: FlDotData(
+                                show: true,
+                                getDotPainter: (spot, percent, barData, index) {
+                                  return FlDotCirclePainter(
+                                    radius: 4,
+                                    color: AppColors.primaryAccent,
+                                    strokeWidth: 2,
+                                    strokeColor: Colors.white,
+                                  );
+                                },
+                              ),
+                              belowBarData: BarAreaData(
+                                show: true,
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    AppColors.primaryAccent.withValues(alpha: 0.3),
+                                    AppColors.primaryAccent.withValues(alpha: 0.05),
+                                  ],
+                                ),
+                              ),
+                              spots: List.generate(history.length, (i) {
+                                final e = history[history.length - 1 - i];
+                                return FlSpot(i.toDouble(), e.percentage);
+                              }).reversed.toList(),
+                            ),
+                          ],
+                          minY: 0,
+                          maxY: 100,
                         ),
-                      ],
-                      minY: 0,
-                      maxY: 100,
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ),
 
               const SizedBox(height: 24),
             ],
 
-            const Text(
+            Text(
               'Recent Results',
               style: TextStyle(
-                color: AppColors.textPrimary,
+                color: Theme.of(context).brightness == Brightness.dark 
+                  ? AppColors.textPrimaryDark 
+                  : AppColors.textPrimary,
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
@@ -163,33 +249,47 @@ class StatsScreen extends ConsumerWidget {
                       itemBuilder: (context, index) {
                         final h = history[index];
                         return common.AppCard(
+                          isGlassmorphism: true,
+                          gradientColors: AppColors.getScoreGradient(h.percentage),
                           padding: const EdgeInsets.all(16),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '${h.category.toUpperCase()} · ${h.difficulty.toUpperCase()}',
-                                    style: const TextStyle(
-                                      color: AppColors.textPrimary,
-                                      fontWeight: FontWeight.w600,
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${h.category.toUpperCase()} · ${h.difficulty.toUpperCase()}',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 14,
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    '${h.score}/${h.total} · ${(h.percentage).toStringAsFixed(1)}% · ${Duration(seconds: h.durationSeconds).inMinutes.toString().padLeft(2, '0')}:${(h.durationSeconds % 60).toString().padLeft(2, '0')}',
-                                    style: const TextStyle(
-                                      color: AppColors.textMuted,
-                                      fontSize: 12,
+                                    const SizedBox(height: 6),
+                                    Text(
+                                      '${h.score}/${h.total} · ${(h.percentage).toStringAsFixed(1)}% · ${Duration(seconds: h.durationSeconds).inMinutes.toString().padLeft(2, '0')}:${(h.durationSeconds % 60).toString().padLeft(2, '0')}',
+                                      style: const TextStyle(
+                                        color: Colors.white70,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                              const Icon(
-                                Icons.chevron_right,
-                                color: AppColors.textMuted,
+                              Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withValues(alpha: 0.2),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: const Icon(
+                                  Icons.chevron_right,
+                                  color: Colors.white,
+                                  size: 16,
+                                ),
                               ),
                             ],
                           ),

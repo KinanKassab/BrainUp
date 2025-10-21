@@ -25,7 +25,6 @@ class HistoryNotifier extends _$HistoryNotifier {
           .map((e) => QuizHistoryEntry.fromJson(e as Map<String, dynamic>))
           .toList();
     } catch (e) {
-      print('Error loading history: $e');
       state = const [];
     }
   }
@@ -36,7 +35,7 @@ class HistoryNotifier extends _$HistoryNotifier {
       final raw = jsonEncode(state.map((e) => e.toJson()).toList());
       await prefs.setString(_key, raw);
     } catch (e) {
-      print('Error saving history: $e');
+      // Error saving history - silently fail
     }
   }
 

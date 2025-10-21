@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
 import '../widgets/common_widgets.dart';
-import '../widgets/quiz_widgets.dart';
 import '../providers/quiz_provider.dart';
 import '../providers/theme_provider.dart';
 import '../providers/history_provider.dart';
@@ -89,7 +88,7 @@ class _ResultsScreenState extends ConsumerState<ResultsScreen>
 
     final shareText =
         '''
-🎯 Quiz Results - Quizzles
+🎯 Quiz Results - MasterMath
 
 Score: $score/$total (${percentage.toStringAsFixed(1)}%)
 
@@ -168,10 +167,12 @@ Great job! 🎉
 
     return AppScaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Results',
           style: TextStyle(
-            color: AppColors.textPrimary,
+            color: Theme.of(context).brightness == Brightness.dark 
+              ? AppColors.textPrimaryDark 
+              : AppColors.textPrimary,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -180,7 +181,12 @@ Great job! 🎉
         actions: [
           IconButton(
             onPressed: _shareResults,
-            icon: const Icon(Icons.share, color: AppColors.textPrimary),
+            icon: Icon(
+              Icons.share, 
+              color: Theme.of(context).brightness == Brightness.dark 
+                ? AppColors.textPrimaryDark 
+                : AppColors.textPrimary
+            ),
           ),
         ],
       ),
@@ -198,11 +204,13 @@ Great job! 🎉
                   opacity: _fadeAnimation,
                   child: Column(
                     children: [
-                      const Text(
+                      Text(
                         'Your final score is',
                         style: TextStyle(
                           fontSize: 20,
-                          color: AppColors.textMuted,
+                          color: Theme.of(context).brightness == Brightness.dark 
+                            ? AppColors.textMutedDark 
+                            : AppColors.textMuted,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -223,7 +231,7 @@ Great job! 🎉
 
             const SizedBox(height: 32),
 
-            // دائرة النتيجة
+            // دائرة النتيجة مع تدرج ديناميكي
             AnimatedBuilder(
               animation: _slideAnimation,
               builder: (context, child) {
@@ -231,11 +239,57 @@ Great job! 🎉
                   position: _slideAnimation,
                   child: FadeTransition(
                     opacity: _fadeAnimation,
-                    child: ResultCircle(
-                      score: score.toDouble(),
-                      maxScore: total.toDouble(),
-                      size: 140,
-                      label: 'out of $total',
+                    child: Container(
+                      width: 180,
+                      height: 180,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: AppColors.getScoreGradient(percentage),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.getScoreGradient(percentage).first.withValues(alpha: 0.3),
+                            blurRadius: 30,
+                            spreadRadius: 5,
+                            offset: const Offset(0, 8),
+                          ),
+                        ],
+                      ),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '$score',
+                              style: const TextStyle(
+                                fontSize: 48,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Text(
+                              'out of $total',
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.white70,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              '${percentage.toStringAsFixed(1)}%',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 );
@@ -253,15 +307,18 @@ Great job! 🎉
                   child: FadeTransition(
                     opacity: _fadeAnimation,
                     child: AppCard(
+                      isGlassmorphism: true,
                       child: Column(
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
+                              Text(
                                 'Total correct answers',
                                 style: TextStyle(
-                                  color: AppColors.textPrimary,
+                                  color: Theme.of(context).brightness == Brightness.dark 
+                                    ? AppColors.textPrimaryDark 
+                                    : AppColors.textPrimary,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -280,10 +337,12 @@ Great job! 🎉
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
+                              Text(
                                 'Accuracy',
                                 style: TextStyle(
-                                  color: AppColors.textPrimary,
+                                  color: Theme.of(context).brightness == Brightness.dark 
+                                    ? AppColors.textPrimaryDark 
+                                    : AppColors.textPrimary,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -302,18 +361,22 @@ Great job! 🎉
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
+                              Text(
                                 'Time taken',
                                 style: TextStyle(
-                                  color: AppColors.textPrimary,
+                                  color: Theme.of(context).brightness == Brightness.dark 
+                                    ? AppColors.textPrimaryDark 
+                                    : AppColors.textPrimary,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
                               Text(
                                 _formatDuration(session.totalTime),
-                                style: const TextStyle(
-                                  color: AppColors.textMuted,
+                                style: TextStyle(
+                                  color: Theme.of(context).brightness == Brightness.dark 
+                                    ? AppColors.textMutedDark 
+                                    : AppColors.textMuted,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -324,18 +387,22 @@ Great job! 🎉
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
+                              Text(
                                 'Category',
                                 style: TextStyle(
-                                  color: AppColors.textPrimary,
+                                  color: Theme.of(context).brightness == Brightness.dark 
+                                    ? AppColors.textPrimaryDark 
+                                    : AppColors.textPrimary,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
                               Text(
                                 session.settings.category.toUpperCase(),
-                                style: const TextStyle(
-                                  color: AppColors.textMuted,
+                                style: TextStyle(
+                                  color: Theme.of(context).brightness == Brightness.dark 
+                                    ? AppColors.textMutedDark 
+                                    : AppColors.textMuted,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -346,18 +413,22 @@ Great job! 🎉
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
+                              Text(
                                 'Difficulty',
                                 style: TextStyle(
-                                  color: AppColors.textPrimary,
+                                  color: Theme.of(context).brightness == Brightness.dark 
+                                    ? AppColors.textPrimaryDark 
+                                    : AppColors.textPrimary,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
                               Text(
                                 session.settings.difficulty.toUpperCase(),
-                                style: const TextStyle(
-                                  color: AppColors.textMuted,
+                                style: TextStyle(
+                                  color: Theme.of(context).brightness == Brightness.dark 
+                                    ? AppColors.textMutedDark 
+                                    : AppColors.textMuted,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                 ),

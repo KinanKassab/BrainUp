@@ -7,12 +7,12 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:brainup/main.dart';
+import 'package:mastermath/main.dart';
 
 void main() {
   testWidgets('App shows welcome UI', (WidgetTester tester) async {
     // Build app
-    await tester.pumpWidget(const ProviderScope(child: QuizzlesApp()));
+    await tester.pumpWidget(const ProviderScope(child: MasterMathApp()));
 
     // Verify welcome elements exist
     expect(find.text('Quizzles'), findsOneWidget);
@@ -23,7 +23,7 @@ void main() {
     WidgetTester tester,
   ) async {
     // Build app
-    await tester.pumpWidget(const ProviderScope(child: QuizzlesApp()));
+    await tester.pumpWidget(const ProviderScope(child: MasterMathApp()));
 
     // Tap Play Now button
     await tester.tap(find.text('Play Now'));

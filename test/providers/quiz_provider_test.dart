@@ -2,10 +2,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
-import 'package:brainup/providers/quiz_provider.dart';
-import 'package:brainup/models/settings_model.dart';
-import 'package:brainup/models/question.dart';
-import 'package:brainup/services/api_service.dart';
+import 'package:mastermath/providers/quiz_provider.dart';
+import 'package:mastermath/models/settings_model.dart';
+import 'package:mastermath/models/question.dart';
+import 'package:mastermath/services/api_service.dart';
 
 import 'quiz_provider_test.mocks.dart';
 

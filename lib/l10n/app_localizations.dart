@@ -101,13 +101,13 @@ abstract class AppLocalizations {
   /// The title of the application
   ///
   /// In en, this message translates to:
-  /// **'Master Math'**
+  /// **'MasterMath'**
   String get appTitle;
 
   /// Welcome screen title
   ///
   /// In en, this message translates to:
-  /// **'Welcome to Master Math'**
+  /// **'Welcome to MasterMath'**
   String get welcomeTitle;
 
   /// Welcome screen subtitle
@@ -479,13 +479,13 @@ abstract class AppLocalizations {
   /// About app title
   ///
   /// In en, this message translates to:
-  /// **'About Master Math'**
+  /// **'About MasterMath'**
   String get aboutApp;
 
   /// About app description
   ///
   /// In en, this message translates to:
-  /// **'Master Math is a comprehensive mathematics training app that helps you develop your mathematical skills through structured practice. Choose from different categories and levels to challenge yourself and track your progress.'**
+  /// **'MasterMath is a comprehensive mathematics training app that helps you develop your mathematical skills through structured practice. Choose from different categories and levels to challenge yourself and track your progress.'**
   String get aboutDescription;
 
   /// Version label
@@ -499,6 +499,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Developed by'**
   String get developedBy;
+
+  /// Label for difficulty setting
+  ///
+  /// In en, this message translates to:
+  /// **'Difficulty'**
+  String get difficulty;
+
+  /// General category
+  ///
+  /// In en, this message translates to:
+  /// **'General'**
+  String get general;
+
+  /// Science category
+  ///
+  /// In en, this message translates to:
+  /// **'Science'**
+  String get science;
+
+  /// History category
+  ///
+  /// In en, this message translates to:
+  /// **'History'**
+  String get history;
+
+  /// Geography category
+  ///
+  /// In en, this message translates to:
+  /// **'Geography'**
+  String get geography;
+
+  /// Literature category
+  ///
+  /// In en, this message translates to:
+  /// **'Literature'**
+  String get literature;
+
+  /// Label for using API questions setting
+  ///
+  /// In en, this message translates to:
+  /// **'Use API Questions'**
+  String get useApiQuestions;
+
+  /// Label for API question count setting
+  ///
+  /// In en, this message translates to:
+  /// **'API Question Count'**
+  String get apiQuestionCount;
 }
 
 class _AppLocalizationsDelegate

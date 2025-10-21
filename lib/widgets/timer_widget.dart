@@ -74,7 +74,7 @@ class _CircularTimerWidgetState extends State<CircularTimerWidget>
               Container(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.grey.withOpacity(0.1),
+                  color: Colors.grey.withValues(alpha:0.1),
                 ),
               ),
               // المؤقت الدائري
@@ -83,7 +83,6 @@ class _CircularTimerWidgetState extends State<CircularTimerWidget>
                   progress: progress,
                   isLowTime: isLowTime,
                 ),
-                child: Container(),
               ),
               // النص في المنتصف
               Center(
@@ -121,14 +120,14 @@ class CircularTimerPainter extends CustomPainter {
     
     // فرشاة الخلفية
     final backgroundPaint = Paint()
-      ..color = Colors.grey.withOpacity(0.3)
+      ..color = Colors.grey.withValues(alpha:0.3)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 4;
     
     // فرشاة المؤقت
     final timerPaint = Paint()
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 4
+      ..strokeWidth = 4.0
       ..strokeCap = StrokeCap.round;
     
     // تحديد اللون حسب الوقت المتبقي
@@ -228,7 +227,7 @@ class _LinearTimerWidgetState extends State<LinearTimerWidget>
       height: 8,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4),
-        color: Colors.grey.withOpacity(0.2),
+        color: Colors.grey.withValues(alpha:0.2),
       ),
       child: AnimatedBuilder(
         animation: _animation,

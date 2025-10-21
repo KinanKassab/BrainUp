@@ -54,21 +54,26 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
   }
 
   void _showAboutDialog() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppColors.bgCard,
+        backgroundColor: isDark ? AppColors.bgCardDark : AppColors.bgCard,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
-        title: const Text(
-          'About Master Math',
+        title: Text(
+          'About MasterMath',
           style: TextStyle(
-            color: AppColors.textPrimary,
+            color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimary,
             fontWeight: FontWeight.bold,
           ),
         ),
-        content: const Text(
-          'Master Math is a comprehensive mathematics training app that helps you develop your mathematical skills through structured practice. Choose from different categories and levels to challenge yourself and track your progress.',
-          style: TextStyle(color: AppColors.textMuted, height: 1.5),
+        content: Text(
+          'MasterMath is a comprehensive mathematics training app that helps you develop your mathematical skills through structured practice. Choose from different categories and levels to challenge yourself and track your progress.',
+          style: TextStyle(
+            color: isDark ? AppColors.textSecondaryDark : AppColors.textMuted,
+            height: 1.5,
+          ),
         ),
         actions: [
           TextButton(
@@ -100,6 +105,8 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
     return common.AppScaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -107,9 +114,9 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
         actions: [
           IconButton(
             onPressed: _navigateToSettings,
-            icon: const Icon(
+            icon: Icon(
               Icons.settings,
-              color: AppColors.textPrimary,
+              color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimary,
               size: 28,
             ),
           ),
@@ -136,22 +143,31 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
                           height: 120,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            gradient: const LinearGradient(
+                            gradient: LinearGradient(
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
-                              colors: [AppColors.logoPink, AppColors.ctaPurple],
+                              colors: AppColors.primaryGradient,
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: AppColors.logoPink.withValues(
-                                  alpha: 0.3,
+                                color: AppColors.primaryAccent.withValues(
+                                  alpha: isDark ? 0.6 : 0.4,
                                 ),
-                                blurRadius: 30,
-                                spreadRadius: 5,
+                                blurRadius: isDark ? 50 : 40,
+                                spreadRadius: isDark ? 10 : 8,
+                                offset: const Offset(0, 8),
+                              ),
+                              BoxShadow(
+                                color: AppColors.secondaryAccent.withValues(
+                                  alpha: isDark ? 0.3 : 0.2,
+                                ),
+                                blurRadius: 20,
+                                spreadRadius: 4,
+                                offset: const Offset(0, 4),
                               ),
                             ],
                           ),
-                            child: const Icon(
+                          child: const Icon(
                             Icons.calculate,
                             size: 60,
                             color: Colors.white,
@@ -159,12 +175,12 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
                         ),
                       ),
                       const SizedBox(height: 24),
-                      const Text(
-                        'Master Math',
+                      Text(
+                        'MasterMath',
                         style: TextStyle(
                           fontSize: 36,
                           fontWeight: FontWeight.bold,
-                          color: AppColors.textPrimary,
+                          color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimary,
                           letterSpacing: 1.2,
                         ),
                       ),
@@ -195,11 +211,11 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
                           ),
                         ),
                         const SizedBox(height: 8),
-                        const Text(
+                        Text(
                           'Train your mind and improve your skills',
                           style: TextStyle(
                             fontSize: 16,
-                            color: AppColors.textMuted,
+                            color: isDark ? AppColors.textSecondaryDark : AppColors.textMuted,
                             fontWeight: FontWeight.w500,
                           ),
                         ),

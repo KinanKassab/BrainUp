@@ -38,8 +38,7 @@ class SettingsNotifier extends _$SettingsNotifier {
       final settingsJson = jsonEncode(state.toJson());
       await prefs.setString(_settingsKey, settingsJson);
     } catch (e) {
-      // يمكن إضافة معالجة الأخطاء هنا
-      print('Error saving settings: $e');
+      // Error saving settings - silently fail
     }
   }
 

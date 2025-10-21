@@ -17,12 +17,6 @@ class TestSettingsScreen extends ConsumerStatefulWidget {
 }
 
 class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
-  final List<String> _categories = [
-    'super_mind',
-    'amazing_fingers',
-    'mental_calculation',
-  ];
-  final List<String> _languages = ['en', 'ar'];
   
   // Category-specific levels
   final Map<String, List<String>> _categoryLevels = {
@@ -31,16 +25,6 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
     'mental_calculation': ['0', '1', '2', '3', '4', '5', '6'],
   };
 
-  String _themeLabel(ThemeMode mode) {
-    switch (mode) {
-      case ThemeMode.system:
-        return 'System';
-      case ThemeMode.light:
-        return 'Light';
-      case ThemeMode.dark:
-        return 'Dark';
-    }
-  }
 
   String _getCategoryDisplayName(String category) {
     switch (category) {
@@ -81,7 +65,11 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
                   child: Text(
                     title,
                     style: TextStyle(
-                      color: isSelected ? AppColors.primaryAccent : AppColors.textPrimary,
+                      color: isSelected 
+                        ? AppColors.primaryAccent 
+                        : (Theme.of(context).brightness == Brightness.dark 
+                            ? AppColors.textPrimaryDark 
+                            : AppColors.textPrimary),
                       fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
                       fontSize: 16,
                     ),
@@ -101,67 +89,6 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
     );
   }
 
-  void _showThemeDialog() {
-    final currentMode = ref.read(themeNotifierProvider);
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: AppColors.bgCard,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
-        title: const Text(
-          'Select Theme',
-          style: TextStyle(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _buildVerticalOption(
-              'System',
-              currentMode == ThemeMode.system,
-              () {
-                ref.read(themeNotifierProvider.notifier).setThemeMode(ThemeMode.system);
-                Navigator.of(context).pop();
-              },
-            ),
-            const SizedBox(height: 8),
-            _buildVerticalOption(
-              'Light',
-              currentMode == ThemeMode.light,
-              () {
-                ref.read(themeNotifierProvider.notifier).setThemeMode(ThemeMode.light);
-                Navigator.of(context).pop();
-              },
-            ),
-            const SizedBox(height: 8),
-            _buildVerticalOption(
-              'Dark',
-              currentMode == ThemeMode.dark,
-              () {
-                ref.read(themeNotifierProvider.notifier).setThemeMode(ThemeMode.dark);
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text(
-              'Cancel',
-              style: TextStyle(
-                color: AppColors.textMuted,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   void _startQuiz() {
     final settings = ref.read(settingsNotifierProvider);
@@ -190,36 +117,41 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
     final currentCategory = currentSettings.category;
     final currentLevel = currentSettings.level;
     final availableLevels = _categoryLevels[currentCategory] ?? ['0'];
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppColors.bgCard,
+        backgroundColor: isDark ? AppColors.bgCardDark : AppColors.bgCard,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
-        title: const Text(
+        title: Text(
           'Select Level',
           style: TextStyle(
-            color: AppColors.textPrimary,
+            color: Theme.of(context).brightness == Brightness.dark 
+              ? AppColors.textPrimaryDark 
+              : AppColors.textPrimary,
             fontWeight: FontWeight.bold,
           ),
         ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: availableLevels.map((level) {
-            return Column(
-              children: [
-                _buildVerticalOption(
-                  'Level $level',
-                  currentLevel == level,
-                  () {
-                    ref.read(settingsNotifierProvider.notifier).updateLevel(level);
-                    Navigator.of(context).pop();
-                  },
-                ),
-                if (level != availableLevels.last) const SizedBox(height: 8),
-              ],
-            );
-          }).toList(),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: availableLevels.map((level) {
+              return Column(
+                children: [
+                  _buildVerticalOption(
+                    'Level $level',
+                    currentLevel == level,
+                    () {
+                      ref.read(settingsNotifierProvider.notifier).updateLevel(level);
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  if (level != availableLevels.last) const SizedBox(height: 8),
+                ],
+              );
+            }).toList(),
+          ),
         ),
         actions: [
           TextButton(
@@ -239,55 +171,60 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
 
   void _showCategoryDialog() {
     final currentCategory = ref.read(settingsNotifierProvider).category;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppColors.bgCard,
+        backgroundColor: isDark ? AppColors.bgCardDark : AppColors.bgCard,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
-        title: const Text(
+        title: Text(
           'Select Category',
           style: TextStyle(
-            color: AppColors.textPrimary,
+            color: Theme.of(context).brightness == Brightness.dark 
+              ? AppColors.textPrimaryDark 
+              : AppColors.textPrimary,
             fontWeight: FontWeight.bold,
           ),
         ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _buildVerticalOption(
-              'Super Mind',
-              currentCategory == 'super_mind',
-              () {
-                ref.read(settingsNotifierProvider.notifier).updateCategory('super_mind');
-                // Reset to first level when changing category
-                ref.read(settingsNotifierProvider.notifier).updateLevel('0');
-                Navigator.of(context).pop();
-              },
-            ),
-            const SizedBox(height: 8),
-            _buildVerticalOption(
-              'Amazing Fingers',
-              currentCategory == 'amazing_fingers',
-              () {
-                ref.read(settingsNotifierProvider.notifier).updateCategory('amazing_fingers');
-                // Reset to first level when changing category
-                ref.read(settingsNotifierProvider.notifier).updateLevel('1');
-                Navigator.of(context).pop();
-              },
-            ),
-            const SizedBox(height: 8),
-            _buildVerticalOption(
-              'Mental Calculation',
-              currentCategory == 'mental_calculation',
-              () {
-                ref.read(settingsNotifierProvider.notifier).updateCategory('mental_calculation');
-                // Reset to first level when changing category
-                ref.read(settingsNotifierProvider.notifier).updateLevel('0');
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildVerticalOption(
+                'Super Mind',
+                currentCategory == 'super_mind',
+                () {
+                  ref.read(settingsNotifierProvider.notifier).updateCategory('super_mind');
+                  // Reset to first level when changing category
+                  ref.read(settingsNotifierProvider.notifier).updateLevel('0');
+                  Navigator.of(context).pop();
+                },
+              ),
+              const SizedBox(height: 8),
+              _buildVerticalOption(
+                'Amazing Fingers',
+                currentCategory == 'amazing_fingers',
+                () {
+                  ref.read(settingsNotifierProvider.notifier).updateCategory('amazing_fingers');
+                  // Reset to first level when changing category
+                  ref.read(settingsNotifierProvider.notifier).updateLevel('1');
+                  Navigator.of(context).pop();
+                },
+              ),
+              const SizedBox(height: 8),
+              _buildVerticalOption(
+                'Mental Calculation',
+                currentCategory == 'mental_calculation',
+                () {
+                  ref.read(settingsNotifierProvider.notifier).updateCategory('mental_calculation');
+                  // Reset to first level when changing category
+                  ref.read(settingsNotifierProvider.notifier).updateLevel('0');
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
         ),
         actions: [
           TextButton(
@@ -305,58 +242,6 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
     );
   }
 
-  void _showLanguageDialog() {
-    final currentLanguage = ref.read(settingsNotifierProvider).language;
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: AppColors.bgCard,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
-        title: const Text(
-          'Select Language',
-          style: TextStyle(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _buildVerticalOption(
-              'English',
-              currentLanguage == 'en',
-              () {
-                ref.read(settingsNotifierProvider.notifier).updateLanguage('en');
-                Navigator.of(context).pop();
-              },
-            ),
-            const SizedBox(height: 8),
-            _buildVerticalOption(
-              'العربية',
-              currentLanguage == 'ar',
-              () {
-                ref.read(settingsNotifierProvider.notifier).updateLanguage('ar');
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text(
-              'Cancel',
-              style: TextStyle(
-                color: AppColors.textMuted,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -364,10 +249,12 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
 
     return common.AppScaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Test Settings',
           style: TextStyle(
-            color: AppColors.textPrimary,
+            color: Theme.of(context).brightness == Brightness.dark 
+              ? AppColors.textPrimaryDark 
+              : AppColors.textPrimary,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -383,32 +270,39 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
             const SizedBox(height: 16),
 
 
-            // عدد الأسئلة
-            SettingsTile(
-              icon: Icons.quiz,
-              title: 'Number of Questions',
-              subtitle: '${settings.numQuestions} questions',
-              trailing: const SizedBox(width: 100),
-              onTap: () {
+            // عدد الأسئلة مع تأثيرات محسنة
+            common.AppCard(
+              isGlassmorphism: true,
+              padding: const EdgeInsets.all(16),
+              child: SettingsTile(
+                icon: Icons.quiz,
+                title: 'Number of Questions',
+                subtitle: '${settings.numQuestions} questions',
+                trailing: const SizedBox(width: 100),
+                onTap: () {
                 int dialogNumQuestions = settings.numQuestions;
+                final isDark = Theme.of(context).brightness == Brightness.dark;
                 showDialog(
                   context: context,
                   builder: (context) => StatefulBuilder(
                     builder: (context, setState) => AlertDialog(
-                      backgroundColor: AppColors.bgCard,
+                      backgroundColor: isDark ? AppColors.bgCardDark : AppColors.bgCard,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(22),
                       ),
-                      title: const Text(
+                      title: Text(
                         'Number of Questions',
                         style: TextStyle(
-                          color: AppColors.textPrimary,
+                          color: Theme.of(context).brightness == Brightness.dark 
+                            ? AppColors.textPrimaryDark 
+                            : AppColors.textPrimary,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
+                      content: SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
                           Text(
                             '$dialogNumQuestions',
                             style: const TextStyle(
@@ -441,7 +335,8 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
                               fontSize: 12,
                             ),
                           ),
-                        ],
+                          ],
+                        ),
                       ),
                       actions: [
                         TextButton(
@@ -462,11 +357,15 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
                 );
               },
             ),
+            ),
 
             const SizedBox(height: 16),
 
-            // الفئة
-            SettingsTile(
+            // الفئة مع تأثيرات محسنة
+            common.AppCard(
+              isGlassmorphism: true,
+              padding: const EdgeInsets.all(16),
+              child: SettingsTile(
               icon: Icons.category,
               title: 'Category',
               subtitle: _getCategoryDisplayName(settings.category),
@@ -477,11 +376,15 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
               ),
               onTap: _showCategoryDialog,
             ),
+            ),
 
             const SizedBox(height: 16),
 
-            // المستوى
-            SettingsTile(
+            // المستوى مع تأثيرات محسنة
+            common.AppCard(
+              isGlassmorphism: true,
+              padding: const EdgeInsets.all(16),
+              child: SettingsTile(
               icon: Icons.trending_up,
               title: 'Level',
               subtitle: 'Level ${settings.level}',
@@ -492,11 +395,15 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
               ),
               onTap: _showLevelDialog,
             ),
+            ),
 
             const SizedBox(height: 16),
 
-            // المؤقت
-            SettingsTile(
+            // المؤقت مع تأثيرات محسنة
+            common.AppCard(
+              isGlassmorphism: true,
+              padding: const EdgeInsets.all(16),
+              child: SettingsTile(
               icon: Icons.timer,
               title: 'Timer per Question',
               subtitle: settings.timerEnabled
@@ -510,19 +417,23 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
                 activeThumbColor: AppColors.primaryAccent,
               ),
             ),
+            ),
 
             // إعدادات المؤقت
             if (settings.timerEnabled) ...[
               const SizedBox(height: 8),
               common.AppCard(
+                isGlassmorphism: true,
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Timer Duration: ${settings.timerSeconds} seconds',
-                      style: const TextStyle(
-                        color: AppColors.textPrimary,
+                      style: TextStyle(
+                        color: Theme.of(context).brightness == Brightness.dark 
+                          ? AppColors.textPrimaryDark 
+                          : AppColors.textPrimary,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -555,8 +466,11 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
 
             const SizedBox(height: 16),
 
-            // الصوت
-            SettingsTile(
+            // الصوت مع تأثيرات محسنة
+            common.AppCard(
+              isGlassmorphism: true,
+              padding: const EdgeInsets.all(16),
+              child: SettingsTile(
               icon: Icons.volume_up,
               title: 'Sound Effects',
               subtitle: settings.soundOn ? 'Enabled' : 'Disabled',
@@ -568,10 +482,11 @@ class _TestSettingsScreenState extends ConsumerState<TestSettingsScreen> {
                 activeThumbColor: AppColors.primaryAccent,
               ),
             ),
+            ),
 
             const SizedBox(height: 32),
 
-            // زر بدء الاختبار
+            // زر بدء الاختبار مع تدرج
             SizedBox(
               width: double.infinity,
               child: common.PrimaryButton(

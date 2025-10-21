@@ -1,17 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:animations/animations.dart';
 import '../widgets/common_widgets.dart' as common;
 import '../widgets/timer_widget.dart';
 import '../widgets/question_card.dart';
 import '../widgets/option_item.dart';
 import '../widgets/progress_indicator.dart';
 import '../providers/quiz_provider.dart';
-import '../providers/settings_provider.dart';
-import '../providers/history_provider.dart';
 import '../providers/theme_provider.dart';
-import '../models/quiz_history.dart';
 import 'results_screen.dart';
 import '../l10n/app_localizations.dart';
 
@@ -228,8 +224,10 @@ class _QuizScreenState extends ConsumerState<QuizScreen>
           child: Text(
             '${(session.currentIndex + 1).toString().padLeft(2, '0')}/${session.questions.length}',
             key: ValueKey(session.currentIndex),
-            style: const TextStyle(
-              color: AppColors.textPrimary,
+            style: TextStyle(
+              color: Theme.of(context).brightness == Brightness.dark 
+                ? AppColors.textPrimaryDark 
+                : AppColors.textPrimary,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -355,8 +353,10 @@ class _QuizScreenState extends ConsumerState<QuizScreen>
                                 const SizedBox(width: 8),
                                 Text(
                                   l10n.explanation,
-                                  style: const TextStyle(
-                                    color: AppColors.textPrimary,
+                                  style: TextStyle(
+                                    color: Theme.of(context).brightness == Brightness.dark 
+                                      ? AppColors.textPrimaryDark 
+                                      : AppColors.textPrimary,
                                     fontWeight: FontWeight.w600,
                                     fontSize: 16,
                                   ),
@@ -366,8 +366,10 @@ class _QuizScreenState extends ConsumerState<QuizScreen>
                             const SizedBox(height: 12),
                             Text(
                               question.explanation!,
-                              style: const TextStyle(
-                                color: AppColors.textMuted,
+                              style: TextStyle(
+                                color: Theme.of(context).brightness == Brightness.dark 
+                                  ? AppColors.textMutedDark 
+                                  : AppColors.textMuted,
                                 fontSize: 14,
                                 height: 1.5,
                               ),

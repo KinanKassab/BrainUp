@@ -9,10 +9,10 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'Master Math';
+  String get appTitle => 'MasterMath';
 
   @override
-  String get welcomeTitle => 'Welcome to Master Math';
+  String get welcomeTitle => 'Welcome to MasterMath';
 
   @override
   String get welcomeSubtitle => 'Master mathematics and improve your skills!';
@@ -199,15 +199,39 @@ class AppLocalizationsEn extends AppLocalizations {
   String get system => 'System';
 
   @override
-  String get aboutApp => 'About Master Math';
+  String get aboutApp => 'About MasterMath';
 
   @override
   String get aboutDescription =>
-      'Master Math is a comprehensive mathematics training app that helps you develop your mathematical skills through structured practice. Choose from different categories and levels to challenge yourself and track your progress.';
+      'MasterMath is a comprehensive mathematics training app that helps you develop your mathematical skills through structured practice. Choose from different categories and levels to challenge yourself and track your progress.';
 
   @override
   String get version => 'Version';
 
   @override
   String get developedBy => 'Developed by';
+
+  @override
+  String get difficulty => 'Difficulty';
+
+  @override
+  String get general => 'General';
+
+  @override
+  String get science => 'Science';
+
+  @override
+  String get history => 'History';
+
+  @override
+  String get geography => 'Geography';
+
+  @override
+  String get literature => 'Literature';
+
+  @override
+  String get useApiQuestions => 'Use API Questions';
+
+  @override
+  String get apiQuestionCount => 'API Question Count';
 }

@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:brainup/providers/history_provider.dart';
-import 'package:brainup/models/quiz_history.dart';
+import 'package:mastermath/providers/history_provider.dart';
+import 'package:mastermath/models/quiz_history.dart';
 
 void main() {
   group('HistoryNotifier', () {

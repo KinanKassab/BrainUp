@@ -216,10 +216,12 @@ class SettingsScreenNew extends ConsumerWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary,
+            color: Theme.of(context).brightness == Brightness.dark 
+              ? AppColors.textPrimaryDark 
+              : AppColors.textPrimary,
           ),
         ),
         const SizedBox(height: 16),
@@ -241,16 +243,18 @@ class SettingsScreenNew extends ConsumerWidget {
           Expanded(
             child: Text(
               title,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
-                color: AppColors.textPrimary,
+                color: Theme.of(context).brightness == Brightness.dark 
+                  ? AppColors.textPrimaryDark 
+                  : AppColors.textPrimary,
               ),
             ),
           ),
           Switch(
             value: value,
             onChanged: onChanged,
-            activeColor: AppColors.primaryAccent,
+            activeThumbColor: AppColors.primaryAccent,
           ),
         ],
       ),
@@ -332,7 +336,7 @@ class SettingsScreenNew extends ConsumerWidget {
           ),
           const SizedBox(height: 8),
           DropdownButtonFormField<String>(
-            value: value,
+            initialValue: value,
             onChanged: (newValue) {
               if (newValue != null) {
                 onChanged(newValue);

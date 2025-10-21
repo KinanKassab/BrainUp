@@ -30,7 +30,6 @@ class _OptionItemState extends State<OptionItem>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
-  late Animation<Color?> _colorAnimation;
 
   @override
   void initState() {
@@ -48,13 +47,6 @@ class _OptionItemState extends State<OptionItem>
       curve: Curves.easeInOut,
     ));
     
-    _colorAnimation = ColorTween(
-      begin: Colors.transparent,
-      end: AppColors.primaryAccent.withOpacity(0.1),
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOut,
-    ));
   }
 
   @override
@@ -135,11 +127,11 @@ class _OptionItemState extends State<OptionItem>
 
   Color _getBackgroundColor() {
     if (widget.isCorrect) {
-      return Colors.green.withOpacity(0.1);
+      return Colors.green.withValues(alpha: 0.1);
     } else if (widget.isWrong) {
-      return Colors.red.withOpacity(0.1);
+      return Colors.red.withValues(alpha: 0.1);
     } else if (widget.isSelected) {
-      return AppColors.primaryAccent.withOpacity(0.1);
+      return AppColors.primaryAccent.withValues(alpha: 0.1);
     } else {
       return Colors.transparent;
     }
@@ -153,7 +145,7 @@ class _OptionItemState extends State<OptionItem>
     } else if (widget.isSelected) {
       return AppColors.primaryAccent;
     } else {
-      return Colors.grey.withOpacity(0.3);
+      return Colors.grey.withValues(alpha: 0.3);
     }
   }
 
@@ -165,7 +157,7 @@ class _OptionItemState extends State<OptionItem>
     } else if (widget.isSelected) {
       return AppColors.primaryAccent;
     } else {
-      return Colors.grey.withOpacity(0.1);
+      return Colors.grey.withValues(alpha: 0.1);
     }
   }
 
@@ -177,7 +169,7 @@ class _OptionItemState extends State<OptionItem>
     } else if (widget.isSelected) {
       return AppColors.primaryAccent;
     } else {
-      return Colors.grey.withOpacity(0.3);
+      return Colors.grey.withValues(alpha: 0.3);
     }
   }
 
@@ -187,7 +179,9 @@ class _OptionItemState extends State<OptionItem>
     } else if (widget.isSelected) {
       return AppColors.primaryAccent;
     } else {
-      return AppColors.textPrimary;
+      return Theme.of(context).brightness == Brightness.dark 
+        ? AppColors.textPrimaryDark 
+        : AppColors.textPrimary;
     }
   }
 
@@ -210,7 +204,11 @@ class _OptionItemState extends State<OptionItem>
         style: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.bold,
-          color: widget.isSelected ? Colors.white : AppColors.textPrimary,
+          color: widget.isSelected 
+            ? Colors.white 
+            : (Theme.of(context).brightness == Brightness.dark 
+                ? AppColors.textPrimaryDark 
+                : AppColors.textPrimary),
         ),
       );
     }
@@ -238,7 +236,7 @@ class _OptionItemState extends State<OptionItem>
     if (widget.isCorrect || widget.isWrong) {
       return [
         BoxShadow(
-          color: (widget.isCorrect ? Colors.green : Colors.red).withOpacity(0.3),
+          color: (widget.isCorrect ? Colors.green : Colors.red).withValues(alpha: 0.3),
           blurRadius: 8,
           spreadRadius: 2,
         ),
@@ -246,7 +244,7 @@ class _OptionItemState extends State<OptionItem>
     } else if (widget.isSelected) {
       return [
         BoxShadow(
-          color: AppColors.primaryAccent.withOpacity(0.3),
+          color: AppColors.primaryAccent.withValues(alpha: 0.3),
           blurRadius: 8,
           spreadRadius: 2,
         ),

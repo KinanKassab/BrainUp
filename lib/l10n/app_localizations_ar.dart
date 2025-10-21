@@ -9,10 +9,10 @@ class AppLocalizationsAr extends AppLocalizations {
   AppLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
-  String get appTitle => 'ماستر ماث - تدريب الرياضيات';
+  String get appTitle => 'MasterMath - تدريب الرياضيات';
 
   @override
-  String get welcomeTitle => 'مرحباً بك في ماستر ماث';
+  String get welcomeTitle => 'مرحباً بك في MasterMath';
 
   @override
   String get welcomeSubtitle => 'أتقن الرياضيات وحسّن مهاراتك!';
@@ -199,15 +199,39 @@ class AppLocalizationsAr extends AppLocalizations {
   String get system => 'النظام';
 
   @override
-  String get aboutApp => 'حول ماستر ماث';
+  String get aboutApp => 'حول MasterMath';
 
   @override
   String get aboutDescription =>
-      'ماستر ماث هو تطبيق تدريب شامل للرياضيات يساعدك على تطوير مهاراتك الرياضية من خلال الممارسة المنظمة. اختر من فئات ومستويات مختلفة لتحدي نفسك وتتبع تقدمك.';
+      'MasterMath هو تطبيق تدريب شامل للرياضيات يساعدك على تطوير مهاراتك الرياضية من خلال الممارسة المنظمة. اختر من فئات ومستويات مختلفة لتحدي نفسك وتتبع تقدمك.';
 
   @override
   String get version => 'الإصدار';
 
   @override
   String get developedBy => 'مطور بواسطة';
+
+  @override
+  String get difficulty => 'الصعوبة';
+
+  @override
+  String get general => 'عام';
+
+  @override
+  String get science => 'العلوم';
+
+  @override
+  String get history => 'التاريخ';
+
+  @override
+  String get geography => 'الجغرافيا';
+
+  @override
+  String get literature => 'الأدب';
+
+  @override
+  String get useApiQuestions => 'استخدام أسئلة من الإنترنت';
+
+  @override
+  String get apiQuestionCount => 'عدد الأسئلة من الإنترنت';
 }

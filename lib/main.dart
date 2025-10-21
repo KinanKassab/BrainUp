@@ -39,9 +39,24 @@ class MasterMathApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeNotifierProvider);
     final settings = ref.watch(settingsNotifierProvider);
+    final isDark = themeMode == ThemeMode.dark || 
+                   (themeMode == ThemeMode.system && 
+                    MediaQuery.platformBrightnessOf(context) == Brightness.dark);
+
+    // Update system UI overlay based on theme
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+        systemNavigationBarColor: isDark 
+          ? const Color(0xFF0F172A) 
+          : Colors.white,
+        systemNavigationBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+      ),
+    );
 
     return MaterialApp(
-      title: 'Master Math',
+      title: 'MasterMath',
       debugShowCheckedModeBanner: false,
       themeMode: themeMode,
       localizationsDelegates: [

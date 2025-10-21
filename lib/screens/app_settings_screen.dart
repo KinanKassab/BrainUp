@@ -52,7 +52,11 @@ class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
                   child: Text(
                     title,
                     style: TextStyle(
-                      color: isSelected ? AppColors.primaryAccent : AppColors.textPrimary,
+                      color: isSelected 
+                        ? AppColors.primaryAccent 
+                        : (Theme.of(context).brightness == Brightness.dark 
+                            ? AppColors.textPrimaryDark 
+                            : AppColors.textPrimary),
                       fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
                       fontSize: 16,
                     ),
@@ -80,10 +84,12 @@ class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
       builder: (context) => AlertDialog(
         backgroundColor: AppColors.bgCard,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
-        title: const Text(
+        title: Text(
           'Select Theme',
           style: TextStyle(
-            color: AppColors.textPrimary,
+            color: Theme.of(context).brightness == Brightness.dark 
+              ? AppColors.textPrimaryDark 
+              : AppColors.textPrimary,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -142,10 +148,12 @@ class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
       builder: (context) => AlertDialog(
         backgroundColor: AppColors.bgCard,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
-        title: const Text(
+        title: Text(
           'Select Language',
           style: TextStyle(
-            color: AppColors.textPrimary,
+            color: Theme.of(context).brightness == Brightness.dark 
+              ? AppColors.textPrimaryDark 
+              : AppColors.textPrimary,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -194,10 +202,12 @@ class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
 
     return common.AppScaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Settings',
           style: TextStyle(
-            color: AppColors.textPrimary,
+            color: Theme.of(context).brightness == Brightness.dark 
+              ? AppColors.textPrimaryDark 
+              : AppColors.textPrimary,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -311,8 +321,10 @@ class SettingsTile extends StatelessWidget {
                     children: [
                       Text(
                         title,
-                        style: const TextStyle(
-                          color: AppColors.textPrimary,
+                        style: TextStyle(
+                          color: Theme.of(context).brightness == Brightness.dark 
+                            ? AppColors.textPrimaryDark 
+                            : AppColors.textPrimary,
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                         ),

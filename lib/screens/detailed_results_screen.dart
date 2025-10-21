@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../widgets/common_widgets.dart' as common;
 import '../providers/quiz_provider.dart';
 import '../providers/theme_provider.dart';
-import '../models/question.dart';
 
 /// شاشة النتائج التفصيلية
 class DetailedResultsScreen extends ConsumerWidget {
@@ -22,10 +21,12 @@ class DetailedResultsScreen extends ConsumerWidget {
 
     return common.AppScaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Detailed Results',
           style: TextStyle(
-            color: AppColors.textPrimary,
+            color: Theme.of(context).brightness == Brightness.dark 
+              ? AppColors.textPrimaryDark 
+              : AppColors.textPrimary,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -45,10 +46,12 @@ class DetailedResultsScreen extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Quiz Summary',
                     style: TextStyle(
-                      color: AppColors.textPrimary,
+                      color: Theme.of(context).brightness == Brightness.dark 
+                        ? AppColors.textPrimaryDark 
+                        : AppColors.textPrimary,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
@@ -66,8 +69,10 @@ class DetailedResultsScreen extends ConsumerWidget {
                       ),
                       Text(
                         '${session.questions.length}',
-                        style: const TextStyle(
-                          color: AppColors.textPrimary,
+                        style: TextStyle(
+                          color: Theme.of(context).brightness == Brightness.dark 
+                            ? AppColors.textPrimaryDark 
+                            : AppColors.textPrimary,
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
                         ),
@@ -129,8 +134,10 @@ class DetailedResultsScreen extends ConsumerWidget {
                       ),
                       Text(
                         _formatDuration(session.totalTime),
-                        style: const TextStyle(
-                          color: AppColors.textPrimary,
+                        style: TextStyle(
+                          color: Theme.of(context).brightness == Brightness.dark 
+                            ? AppColors.textPrimaryDark 
+                            : AppColors.textPrimary,
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
                         ),
@@ -144,10 +151,12 @@ class DetailedResultsScreen extends ConsumerWidget {
             const SizedBox(height: 24),
 
             // قائمة الأسئلة
-            const Text(
+            Text(
               'Question Details',
               style: TextStyle(
-                color: AppColors.textPrimary,
+                color: Theme.of(context).brightness == Brightness.dark 
+                  ? AppColors.textPrimaryDark 
+                  : AppColors.textPrimary,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
@@ -193,8 +202,10 @@ class DetailedResultsScreen extends ConsumerWidget {
                           Expanded(
                             child: Text(
                               'Question ${index + 1}',
-                              style: const TextStyle(
-                                color: AppColors.textPrimary,
+                              style: TextStyle(
+                                color: Theme.of(context).brightness == Brightness.dark 
+                                  ? AppColors.textPrimaryDark 
+                                  : AppColors.textPrimary,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -213,8 +224,10 @@ class DetailedResultsScreen extends ConsumerWidget {
                       // نص السؤال
                       Text(
                         question.text,
-                        style: const TextStyle(
-                          color: AppColors.textPrimary,
+                        style: TextStyle(
+                          color: Theme.of(context).brightness == Brightness.dark 
+                            ? AppColors.textPrimaryDark 
+                            : AppColors.textPrimary,
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                         ),
@@ -230,7 +243,9 @@ class DetailedResultsScreen extends ConsumerWidget {
                         final isCorrectAnswer = question.correctAnswerIndex == optionIndex;
 
                         Color backgroundColor = Colors.transparent;
-                        Color textColor = AppColors.textMuted;
+                        Color textColor = Theme.of(context).brightness == Brightness.dark 
+                          ? AppColors.textMutedDark 
+                          : AppColors.textMuted;
                         IconData? icon;
 
                         if (isCorrectAnswer) {

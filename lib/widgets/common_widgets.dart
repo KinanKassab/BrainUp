@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'dart:io';
 import '../providers/theme_provider.dart';
 
 // Light theme colors for backward compatibility
@@ -44,7 +42,7 @@ class AppScaffold extends StatelessWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: isDark 
-              ? [AppColors.backgroundStart, AppColors.backgroundEnd]
+              ? [AppColors.backgroundStartDark, AppColors.backgroundEndDark]
               : [LightAppColors.backgroundStart, LightAppColors.backgroundEnd],
           ),
         ),
@@ -98,6 +96,14 @@ class PrimaryButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(22),
           ),
           elevation: 0,
+          shadowColor: Colors.transparent,
+        ).copyWith(
+          backgroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.pressed)) {
+              return (backgroundColor ?? AppColors.ctaPurple).withValues(alpha: 0.8);
+            }
+            return backgroundColor ?? AppColors.ctaPurple;
+          }),
         ),
         child: isLoading
             ? SizedBox(
@@ -154,17 +160,42 @@ class SecondaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
     return SizedBox(
       width: width,
       height: height,
       child: OutlinedButton(
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
-          foregroundColor: textColor ?? AppColors.textPrimary,
-          side: BorderSide(color: borderColor ?? AppColors.borderLight, width: 1.5),
+          foregroundColor: textColor ?? (isDark ? AppColors.textPrimaryDark : AppColors.textPrimary),
+          side: BorderSide(
+            color: borderColor ?? (isDark ? AppColors.borderDark : AppColors.borderLight), 
+            width: 1.5,
+          ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(22),
           ),
+          elevation: 0,
+        ).copyWith(
+          backgroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.pressed)) {
+              return AppColors.primaryAccent.withValues(alpha: isDark ? 0.2 : 0.1);
+            }
+            if (states.contains(WidgetState.hovered)) {
+              return AppColors.primaryAccent.withValues(alpha: isDark ? 0.1 : 0.05);
+            }
+            return Colors.transparent;
+          }),
+          side: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.pressed)) {
+              return BorderSide(color: AppColors.primaryAccent, width: 2);
+            }
+            return BorderSide(
+              color: borderColor ?? (isDark ? AppColors.borderDark : AppColors.borderLight), 
+              width: 1.5,
+            );
+          }),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -246,17 +277,16 @@ class AdaptiveBackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (Platform.isIOS) {
-      return CupertinoNavigationBarBackButton(
-        onPressed: onPressed ?? () => Navigator.of(context).pop(),
-        color: color ?? AppColors.textPrimary,
-      );
-    } else {
-      return IconButton(
-        onPressed: onPressed ?? () => Navigator.of(context).pop(),
-        icon: Icon(Icons.arrow_back, color: color ?? AppColors.textPrimary),
-      );
-    }
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
+    // For web compatibility, always use Material back button
+    return IconButton(
+      onPressed: onPressed ?? () => Navigator.of(context).pop(),
+      icon: Icon(
+        Icons.arrow_back, 
+        color: color ?? (isDark ? AppColors.textPrimaryDark : AppColors.textPrimary),
+      ),
+    );
   }
 }
 
@@ -275,6 +305,8 @@ class AppLoadingIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -292,7 +324,10 @@ class AppLoadingIndicator extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             message!,
-            style: const TextStyle(color: AppColors.textMuted, fontSize: 14),
+            style: TextStyle(
+              color: isDark ? AppColors.textMutedDark : AppColors.textMuted,
+              fontSize: 14,
+            ),
             textAlign: TextAlign.center,
           ),
         ],
@@ -309,6 +344,8 @@ class AppCard extends StatelessWidget {
   final Color? backgroundColor;
   final double? elevation;
   final BorderRadius? borderRadius;
+  final bool isGlassmorphism;
+  final List<Color>? gradientColors;
 
   const AppCard({
     super.key,
@@ -318,6 +355,8 @@ class AppCard extends StatelessWidget {
     this.backgroundColor,
     this.elevation,
     this.borderRadius,
+    this.isGlassmorphism = false,
+    this.gradientColors,
   });
 
   @override
@@ -327,16 +366,38 @@ class AppCard extends StatelessWidget {
     return Container(
       margin: margin,
       decoration: BoxDecoration(
-        color: backgroundColor ?? (isDark ? AppColors.bgCard : LightAppColors.bgCard),
+        color: isGlassmorphism 
+          ? (isDark ? AppColors.glassBackgroundDark : AppColors.glassBackground)
+          : backgroundColor ?? (isDark ? AppColors.bgCardDark : LightAppColors.bgCard),
         borderRadius: borderRadius ?? BorderRadius.circular(22),
+        border: isGlassmorphism 
+          ? Border.all(
+              color: isDark ? AppColors.glassBorderDark : AppColors.glassBorder, 
+              width: 1.5,
+            )
+          : null,
+        gradient: gradientColors != null 
+          ? LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: gradientColors!,
+            )
+          : null,
         boxShadow: [
           BoxShadow(
             color: isDark 
-              ? Colors.black.withValues(alpha: 0.1)
-              : Colors.black.withValues(alpha: 0.05),
-            blurRadius: isDark ? 20 : 10,
-            offset: Offset(0, isDark ? 10 : 5),
+              ? Colors.black.withValues(alpha: 0.3)
+              : Colors.black.withValues(alpha: 0.08),
+            blurRadius: isDark ? 30 : 15,
+            offset: Offset(0, isDark ? 15 : 8),
+            spreadRadius: isDark ? 3 : 1,
           ),
+          if (isGlassmorphism)
+            BoxShadow(
+              color: Colors.white.withValues(alpha: isDark ? 0.05 : 0.1),
+              blurRadius: 10,
+              offset: const Offset(0, -2),
+            ),
         ],
       ),
       child: Padding(

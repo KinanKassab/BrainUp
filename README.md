@@ -1,6 +1,6 @@
-# brainup
+# MasterMath
 
-A new Flutter project.
+A comprehensive mathematics training Flutter application that helps users develop their mathematical skills through structured practice.
 
 ## Getting Started
 

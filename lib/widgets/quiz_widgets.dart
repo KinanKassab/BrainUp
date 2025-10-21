@@ -46,19 +46,23 @@ class SettingsTile extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.textPrimary,
+                      color: Theme.of(context).brightness == Brightness.dark 
+                        ? AppColors.textPrimaryDark 
+                        : AppColors.textPrimary,
                     ),
                   ),
                   if (subtitle != null) ...[
                     const SizedBox(height: 4),
                     Text(
                       subtitle!,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 12,
-                        color: AppColors.textMuted,
+                        color: Theme.of(context).brightness == Brightness.dark 
+                          ? AppColors.textMutedDark 
+                          : AppColors.textMuted,
                       ),
                     ),
                   ],
@@ -208,8 +212,12 @@ class _OptionItemState extends State<OptionItem>
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                         color: widget.isDisabled
-                            ? AppColors.textMuted
-                            : AppColors.textPrimary,
+                            ? (Theme.of(context).brightness == Brightness.dark 
+                                ? AppColors.textMutedDark 
+                                : AppColors.textMuted)
+                            : (Theme.of(context).brightness == Brightness.dark 
+                                ? AppColors.textPrimaryDark 
+                                : AppColors.textPrimary),
                       ),
                     ),
                   ),

@@ -1,10 +1,10 @@
 {
   "@@locale": "en",
-  "appTitle": "Master Math",
+  "appTitle": "MasterMath",
   "@appTitle": {
     "description": "The title of the application"
   },
-  "welcomeTitle": "Welcome to Master Math",
+  "welcomeTitle": "Welcome to MasterMath",
   "@welcomeTitle": {
     "description": "Welcome screen title"
   },
@@ -252,11 +252,11 @@
   "@system": {
     "description": "System theme option"
   },
-  "aboutApp": "About Master Math",
+  "aboutApp": "About MasterMath",
   "@aboutApp": {
     "description": "About app title"
   },
-  "aboutDescription": "Master Math is a comprehensive mathematics training app that helps you develop your mathematical skills through structured practice. Choose from different categories and levels to challenge yourself and track your progress.",
+  "aboutDescription": "MasterMath is a comprehensive mathematics training app that helps you develop your mathematical skills through structured practice. Choose from different categories and levels to challenge yourself and track your progress.",
   "@aboutDescription": {
     "description": "About app description"
   },
@@ -267,5 +267,57 @@
   "developedBy": "Developed by",
   "@developedBy": {
     "description": "Developed by label"
+  },
+  "difficulty": "Difficulty",
+  "@difficulty": {
+    "description": "Label for difficulty setting"
+  },
+  "easy": "Easy",
+  "@easy": {
+    "description": "Easy difficulty level"
+  },
+  "medium": "Medium",
+  "@medium": {
+    "description": "Medium difficulty level"
+  },
+  "hard": "Hard",
+  "@hard": {
+    "description": "Hard difficulty level"
+  },
+  "general": "General",
+  "@general": {
+    "description": "General category"
+  },
+  "science": "Science",
+  "@science": {
+    "description": "Science category"
+  },
+  "history": "History",
+  "@history": {
+    "description": "History category"
+  },
+  "geography": "Geography",
+  "@geography": {
+    "description": "Geography category"
+  },
+  "literature": "Literature",
+  "@literature": {
+    "description": "Literature category"
+  },
+  "sports": "Sports",
+  "@sports": {
+    "description": "Sports category"
+  },
+  "entertainment": "Entertainment",
+  "@entertainment": {
+    "description": "Entertainment category"
+  },
+  "useApiQuestions": "Use API Questions",
+  "@useApiQuestions": {
+    "description": "Label for using API questions setting"
+  },
+  "apiQuestionCount": "API Question Count",
+  "@apiQuestionCount": {
+    "description": "Label for API question count setting"
   }
 }
